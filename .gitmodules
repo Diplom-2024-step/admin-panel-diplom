@@ -1,0 +1,6 @@
+[submodule "models"]
+	path = models
+	url = https://github.com/Hikka-to/HikkaTsDtos.git
+[submodule "AppDtos"]
+	path = AppDtos
+	url = git@github.com:Diplom-2024-step/AppDtos.git
