@@ -3,6 +3,7 @@ import { CrudService } from "@/service/shared/CrudService";
 import React, { useCallback, useEffect, useState } from "react";
 import { Table, TableBody, TableColumn, TableHeader } from "@nextui-org/table";
 import {
+  Button,
   getKeyValue,
   Pagination,
   SlotsToClasses,
@@ -28,6 +29,9 @@ import { ReturnPageDto } from "@/AppDtos/Shared/return-page-dto";
 import { filterPaginationDtoSchema } from "@/AppDtos/Shared/filter-pagination-dto";
 import { SortOrder } from "@/AppDtos/Shared/sort-order";
 import { ModelDto } from "@/AppDtos/Shared/model-dto";
+import ButtonForOpenUpdateModalWindow from "../shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
+import router from "next/router";
+import ButtonForOpenCreateModalWindow from "../shared/models-windows/shared/buttons/ButtonForOpenCreateModalWindow";
 
 const classNames: SlotsToClasses<TableSlots> = {
   wrapper: [
@@ -86,10 +90,13 @@ const ModelTable = <TGetModelDto extends ModelDto>
   const perPageMax = filterPaginationDtoSchema.shape.pageSize.maxValue;
 
   const getDtoSchema = service.getDtoSchema;
+
   const columns = Object.entries(getDtoSchema.shape).filter(([, value]) =>
     accessibleTypes.find((type) => value instanceof type))
   .map(([key, value]) => ({ key: key as keyof TGetModelDto, value: value as AccessibleTypes }))
   .reverse();
+
+
   const columnInfos: ColumnInfos<TGetModelDto> = {
     ...columns.reduce((acc, column) => ({
       ...acc,
@@ -99,6 +106,7 @@ const ModelTable = <TGetModelDto extends ModelDto>
     }), {}),
     ...(columnHeaders || {} as ColumnInfos<TGetModelDto>)
   };
+
   const columnKeys = [...columns.map(({ key }) => ({ key })), { key: "actions" }];
 
   const sortHandler = useCallback((sortDescriptor: SortDescriptor) => {
@@ -106,6 +114,21 @@ const ModelTable = <TGetModelDto extends ModelDto>
   }, []);
 
   const renderCell = useCallback((item: any, column: string | number) => {
+
+
+    const setModelInItems = (item:TGetModelDto) =>
+    {
+      const index = items?.models.findIndex(e => e.id === item.id);
+
+      if (items?.models !== undefined){
+        items!.models[index as number] = item;
+        setItems({...items} as any);
+      }
+
+    }
+
+
+
     if (column === "actions") {
       return (
         <div className="relative flex items-center gap-2">
@@ -114,14 +137,25 @@ const ModelTable = <TGetModelDto extends ModelDto>
                 <EyeIcon />
               </span>
           </Tooltip>
-          <Tooltip content="Edit">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EditIcon />
-              </span>
-          </Tooltip>
+          <ButtonForOpenUpdateModalWindow 
+          model={item}
+           service={service}
+           setModel={setModelInItems}
+           />
           <Tooltip color="danger" content="Delete">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon />
+                <DeleteIcon 
+                  onClick={
+                    () => 
+                      {
+                        service.delete(item.id)
+                        items!.models = items?.models.filter(e => e.id !== item.id) || [];
+                        items!.total -= 1;
+                        setItems({...items} as any);
+                      }
+                  }
+                
+                />
               </span>
           </Tooltip>
         </div>
@@ -224,6 +258,11 @@ const ModelTable = <TGetModelDto extends ModelDto>
           max={perPageMax ?? undefined}
           isBlurred={true}
         />
+
+        <ButtonForOpenCreateModalWindow
+          service={service}
+        />
+
         {items && items.howManyPages > 0 ? (
           <Pagination
             className="min-w-fit h-fit p-0 m-auto md:m-0"
