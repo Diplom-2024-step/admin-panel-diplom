@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import GenerateCreateInputForCreateDtoScheme from './GeneratedInputs/GenerateCreateInputForCreateDtoScheme';
 import { Button } from '@nextui-org/react';
 import { ZodError } from 'zod';
+import ZodErrorModalWindow from './ZodErrorModalWindow';
 
 const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDto>>(
      {
@@ -22,6 +23,9 @@ const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDt
 
 
   const [form, setForm] = useState({...initialForm});
+  const [isError, setIsError] = useState(false);
+  const [errors, setErros] = useState<Zod.ZodIssue[]>([]);
+
 
    const clearState = () => {
         setForm({ ...initialForm });
@@ -29,8 +33,6 @@ const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDt
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
-    console.log(`name = ${name} value = ${value}`);
-    console.log(form);
     setForm((prevState:any) => ({ ...prevState, [name]: value }));
   };
 
@@ -42,7 +44,8 @@ const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDt
             onClose();
         } catch (e) {
             if (e instanceof ZodError) {
-                console.error(e.errors);
+                setErros(e.errors);
+                setIsError(true);
             }
             else
             {
@@ -53,6 +56,7 @@ const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDt
     }
 
   return (
+    <>
     <Modal isOpen={isOpen} onClose={onClose}>
             <ModalContent>
                 {(onClose) => (
@@ -81,6 +85,12 @@ const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDt
                 )}
             </ModalContent>
         </Modal>
+        <ZodErrorModalWindow
+            errors={errors}
+            isOpen={isError}
+            setIsOpen={setIsError}
+        />
+</>
   )
 }
 

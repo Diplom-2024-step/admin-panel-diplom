@@ -5,6 +5,7 @@ import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader
 import React, { useState } from 'react'
 import { ZodError } from 'zod';
 import GenerateEditInputForUpdateDtoScheme from './GeneratedInputs/GenerateEditInputForUpdateDtoScheme';
+import ZodErrorModalWindow from './ZodErrorModalWindow';
 
 const EditModelWindow = <
     TGetModelDto extends ModelDto,
@@ -29,6 +30,9 @@ const EditModelWindow = <
         setState
     ] = useState(model);
 
+  const [isError, setIsError] = useState(false);
+  const [errors, setErros] = useState<Zod.ZodIssue[]>([]);
+
 
     const onChange = (e: any) => {
         const { name, value } = e.target;
@@ -51,7 +55,8 @@ const EditModelWindow = <
             onClose();
         } catch (e) {
             if (e instanceof ZodError) {
-                console.error(e.errors);
+                setErros(e.errors);
+                setIsError(true);
             }
             else
             {
@@ -67,6 +72,7 @@ const EditModelWindow = <
         onClose();
     }
     return (
+        <>
         <Modal isOpen={isOpen} onClose={innerOnClose}>
             <ModalContent>
                 {(innerOnClose) => (
@@ -96,6 +102,12 @@ const EditModelWindow = <
                 )}
             </ModalContent>
         </Modal>
+        <ZodErrorModalWindow
+            errors={errors}
+            isOpen={isError}
+            setIsOpen={setIsError}
+        />
+        </>
     )
 }
 

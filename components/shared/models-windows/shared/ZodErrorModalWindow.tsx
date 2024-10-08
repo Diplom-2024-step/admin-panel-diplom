@@ -4,18 +4,17 @@ import { error } from 'console';
 import React, { useState } from 'react'
 import { ZodIssue } from 'zod'
 
-const ZodErrorModalWindow = ({errors} : {errors: ZodIssue[]}) => {
-    const [isOpen, setIsOpen] = useState(true);
+const ZodErrorModalWindow = ({errors, isOpen, setIsOpen} : {errors: ZodIssue[], isOpen: boolean, setIsOpen: (value:any) => void}) => {
 
   return (
-    <Modal isOpen={isOpen} onClose={() => setIsOpen(true)}>
+    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
             <ModalContent>
                 {(innerOnClose) => (
                     <>
-                        <ModalHeader className="flex flex-col gap-1">Update the model</ModalHeader>
+                        <ModalHeader className="flex flex-col gap-1">Errors</ModalHeader>
                         <ModalBody>
                             {errors.map(error => (
-                                <p>{error.message}
+                                <p> {error.path} = {error.message}
                                 </p>
                             ))}
 
