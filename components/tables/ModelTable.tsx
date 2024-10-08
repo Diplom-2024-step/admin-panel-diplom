@@ -113,10 +113,18 @@ const ModelTable = <TGetModelDto extends ModelDto>
     setSortDescriptor(sortDescriptor);
   }, []);
 
+
+  const addNewModelInItems = () => 
+    {
+
+    }
+
+
+
   const renderCell = useCallback((item: any, column: string | number) => {
 
 
-    const setModelInItems = (item:TGetModelDto) =>
+    const updateModelInItems = (item:TGetModelDto) =>
     {
       const index = items?.models.findIndex(e => e.id === item.id);
 
@@ -140,7 +148,7 @@ const ModelTable = <TGetModelDto extends ModelDto>
           <ButtonForOpenUpdateModalWindow 
           model={item}
            service={service}
-           setModel={setModelInItems}
+           setModel={updateModelInItems}
            />
           <Tooltip color="danger" content="Delete">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">

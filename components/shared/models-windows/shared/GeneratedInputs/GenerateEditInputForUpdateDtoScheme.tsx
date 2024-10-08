@@ -38,7 +38,7 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
         }
     });
 
-    const renderCell = useCallback((field: keyof typeof updateScheme.shape) => {
+    const renderInput = useCallback((field: keyof typeof updateScheme.shape) => {
 
         if (field == "id") return;
         const fieldValue = updateObject[field as string];
@@ -87,7 +87,7 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
         <>
             {Object.entries(updateScheme.shape).map(([key, value]) => (
                 <>
-                    {renderCell(key as keyof typeof updateScheme.shape)}
+                    {renderInput(key as keyof typeof updateScheme.shape)}
                 </>
             ))}
         </>
