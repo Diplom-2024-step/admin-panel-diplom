@@ -51,6 +51,7 @@ const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDt
             setForm((prevState: any) => ({ ...prevState, [name]: value }));
         }
         else {
+            console.debug(e);
             setForm((prevState: any) => ({ ...prevState, [name]: value }));
         }
     };

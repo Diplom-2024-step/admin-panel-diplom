@@ -65,6 +65,8 @@ const GenerateCreateInputForCreateDtoScheme = (
             {
                 const func = specificInputMap.get(field as string);
 
+                console.debug(fieldValue);
+
                 return func!(onChange, fieldValue || '');
             }
 

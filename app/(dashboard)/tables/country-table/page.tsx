@@ -19,19 +19,11 @@ const page = () => {
 
     const returnButtonForOpenCreateWindow : ReturnButtonForOpenCreateWindowFunction<CrudService<ModelDto, object, ModelDto>>  = (service:CrudService<ModelDto, object, ModelDto> ) =>  {
       
-      const getSpificInputForCountryId = (e:OnChangeFunctionProps, currectValue:any) => 
-        {
-          return <CountryInput
-                          onChange={e}
-                          currectValue={currectValue}
-                          />;
-        }
+     
 
       return <ButtonForOpenCreateModalWindow 
                         service={service}
-                         specificInputMap={new Map([
-                          ["countryId", getSpificInputForCountryId]
-                         ])}
+                         specificInputMap={new Map()}
                          
                          />
 
@@ -44,21 +36,13 @@ const page = () => {
       setModel: (model: GetCountryDto) => void
      ) =>  {
       
-      const getSpificInputForCountryId = (e:OnChangeFunctionProps, currectValue: any) => 
-        {
-          return <CountryInput
-                          onChange={e}
-                          currectValue={currectValue}
-                          />;
-        }
+     
 
       return <ButtonForOpenUpdateModalWindow
         model={model}
         service={service}
         setModel={setModel}
-        specificInputMap={new Map([
-                          ["countryId", getSpificInputForCountryId]
-                         ])}
+        specificInputMap={new Map()}
       
       />
 
