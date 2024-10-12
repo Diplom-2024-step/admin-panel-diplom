@@ -4,7 +4,8 @@ import { Tooltip } from '@nextui-org/react';
 import { DeleteIcon, EditIcon, EyeIcon } from "@nextui-org/shared-icons";
 import { ModelDto } from '@/AppDtos/Shared/model-dto';
 import { CrudService } from '@/service/shared/CrudService';
-import EditModelWindow from '../EditModelWindow';
+import EditModelWindow from '../models-windows/EditModelWindow';
+import ButtonForOpenUpdateModalWindowProps from '@/types/model-windows/buttons/update-buttons/ButtonForOpenUpdateModalWindowProps';
 
 
 const ButtonForOpenUpdateModalWindow = <
@@ -12,12 +13,9 @@ const ButtonForOpenUpdateModalWindow = <
     Service extends CrudService<TGetModelDto, object, ModelDto>>({
          model,
          service,
-         setModel
-         }: {
-        model: TGetModelDto,
-        service: Service,
-        setModel: (model:TGetModelDto) => void
-    }) => {
+         setModel,
+         specificInputMap
+         }: ButtonForOpenUpdateModalWindowProps<TGetModelDto, Service>) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
 
@@ -41,6 +39,7 @@ const ButtonForOpenUpdateModalWindow = <
                 model={model} 
                 service={service}
                 setModel={setModel}
+                specificInputMap={specificInputMap}
                 />
         </>
     )

@@ -1,4 +1,7 @@
 "use client"
+import { ModelDto } from '@/AppDtos/Shared/model-dto';
+import FunctionForReturningSpecificInput from '@/types/model-windows/specific-inputs/FunctionForReturningSpecificInput';
+import OnChangeFunctionProps from '@/types/model-windows/specific-inputs/OnChangeFunctionProps';
 import { Input, Select } from '@nextui-org/react';
 import React, { useCallback } from 'react';
 import { ZodString, ZodNumber, ZodBoolean, ZodDate, z, TypeOf, string, number } from 'zod';
@@ -18,14 +21,16 @@ type AccessibleTypes = InstanceType<typeof accessibleNameTypes[AccessibleTypeNam
 
 interface GenerateEditInputForUpdateDtoSchemeProps<T extends Record<string, any>> {
     updateObject: T;
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    onChange: OnChangeFunctionProps;
     updateScheme: z.infer<any>;
+    specificInputMap: Map<string, FunctionForReturningSpecificInput<ModelDto>>
 }
 
 function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
     updateObject,
     onChange,
-    updateScheme
+    updateScheme,
+    specificInputMap
 }: GenerateEditInputForUpdateDtoSchemeProps<T>): JSX.Element {
 
     const fieldToTypeMap = new Map<string, AccessibleTypes>();
@@ -44,6 +49,13 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
         const fieldValue = updateObject[field as string];
         const fieldType = fieldToTypeMap.get(field as string);
 
+        if (specificInputMap.has(field as string))
+            {
+                const func = specificInputMap.get(field as string);
+
+                return func!(onChange, fieldValue || '');
+            }
+
         switch (typeof fieldValue) {
             case "string":
                 return (
@@ -53,7 +65,7 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
                         placeholder={field as string}
                         name={field as string}
                         value={fieldValue || ''}
-                        onChange={(e) => onChange(e)}
+                        onChange={(e) => onChange(e, typeof fieldValue)}
                         required
                     />
                 );
@@ -64,7 +76,7 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
                         label= {field as string}
                         name={field as string}
                         value={fieldValue as any as string  || "0"}
-                        onChange={(e) => onChange(e)}
+                        onChange={(e) => onChange(e, typeof fieldValue)}
                         required
                     />
                 );
@@ -72,7 +84,7 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
                 return (
                     <select 
                         name={field as string}
-                        onChange={(e) => onChange(e)}>
+                        onChange={(e) => onChange(e, typeof fieldValue)}>
                         <option value="">Select</option>
                         <option value="true">True</option>
                         <option value="false">False</option>

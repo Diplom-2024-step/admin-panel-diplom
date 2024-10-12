@@ -1,6 +1,6 @@
 "use client";
 import { CrudService } from "@/service/shared/CrudService";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Table, TableBody, TableColumn, TableHeader } from "@nextui-org/table";
 import {
   Button,
@@ -32,6 +32,11 @@ import { ModelDto } from "@/AppDtos/Shared/model-dto";
 import ButtonForOpenUpdateModalWindow from "../shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
 import router from "next/router";
 import ButtonForOpenCreateModalWindow from "../shared/models-windows/shared/buttons/ButtonForOpenCreateModalWindow";
+import ButtonForOpenCreateModalWindowProps from "@/types/model-windows/buttons/create-buttons/ButtonForOpenCreateModalWindowProps";
+import ReturnButtonForOpenCreateWindowFunction from "@/types/model-windows/buttons/create-buttons/ReturnButtonForOpenCreateWindowFunction";
+import { GetCountryDto } from "@/AppDtos/Dto/Models/Countries/get-country-dto";
+import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/buttons/update-buttons/ReturnButtonForOpenUpdateWindowFunction";
+import Service from "@/service/shared/Service";
 
 const classNames: SlotsToClasses<TableSlots> = {
   wrapper: [
@@ -73,10 +78,13 @@ const transforms: Partial<Record<AccessibleTypeNames, (value: any) => React.Reac
 export interface ModelTableProps<TGetModelDto extends ModelDto> {
   service: CrudService<TGetModelDto, object, ModelDto>;
   columnHeaders?: ColumnInfos<TGetModelDto>;
+  createButton: ReturnButtonForOpenCreateWindowFunction<CrudService<ModelDto, object, ModelDto>>;
+  updateButton: ReturnButtonForOpenUpdateWindowFunction<TGetModelDto, CrudService<TGetModelDto, object, ModelDto>>;
+
 }
 
 const ModelTable = <TGetModelDto extends ModelDto>
-({ service, columnHeaders }: ModelTableProps<TGetModelDto>) => {
+({ service, columnHeaders, createButton, updateButton   }: ModelTableProps<TGetModelDto>) => {
   const status = useAuthService(service);
   const [page, setPage] = useSearchParam("page");
   const [perPage, setPerPage] = useSearchParam("perPage");
@@ -114,12 +122,6 @@ const ModelTable = <TGetModelDto extends ModelDto>
   }, []);
 
 
-  const addNewModelInItems = () => 
-    {
-
-    }
-
-
 
   const renderCell = useCallback((item: any, column: string | number) => {
 
@@ -145,11 +147,11 @@ const ModelTable = <TGetModelDto extends ModelDto>
                 <EyeIcon />
               </span>
           </Tooltip>
-          <ButtonForOpenUpdateModalWindow 
-          model={item}
-           service={service}
-           setModel={updateModelInItems}
-           />
+          {updateButton(
+            item,
+            service,
+            updateModelInItems
+          )}
           <Tooltip color="danger" content="Delete">
               <span className="text-lg text-danger cursor-pointer active:opacity-50">
                 <DeleteIcon 
@@ -267,9 +269,7 @@ const ModelTable = <TGetModelDto extends ModelDto>
           isBlurred={true}
         />
 
-        <ButtonForOpenCreateModalWindow
-          service={service}
-        />
+          {createButton(service)}
 
         {items && items.howManyPages > 0 ? (
           <Pagination

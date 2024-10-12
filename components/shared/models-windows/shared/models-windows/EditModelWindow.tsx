@@ -2,10 +2,12 @@
 import { ModelDto } from '@/AppDtos/Shared/model-dto'
 import { CrudService } from '@/service/shared/CrudService'
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { ZodError } from 'zod';
-import GenerateEditInputForUpdateDtoScheme from './GeneratedInputs/GenerateEditInputForUpdateDtoScheme';
+import GenerateEditInputForUpdateDtoScheme from '../generated-inputs/GenerateEditInputForUpdateDtoScheme';
 import ZodErrorModalWindow from './ZodErrorModalWindow';
+import CountryInput from '../../specific-inputs/CountryInput';
+import FunctionForReturningSpecificInput from '@/types/model-windows/specific-inputs/FunctionForReturningSpecificInput';
 
 const EditModelWindow = <
     TGetModelDto extends ModelDto,
@@ -16,12 +18,15 @@ const EditModelWindow = <
             model,
             service,
             setModel,
+            specificInputMap
+
         }: {
             isOpen: boolean,
             onClose: () => void,
             model: TGetModelDto,
             service: Service,
             setModel: (model : TGetModelDto) => void;
+            specificInputMap: Map<string, FunctionForReturningSpecificInput<ModelDto>>
         }) => {
 
 
@@ -34,10 +39,22 @@ const EditModelWindow = <
   const [errors, setErros] = useState<Zod.ZodIssue[]>([]);
 
 
-    const onChange = (e: any) => {
-        const { name, value } = e.target;
-        setState(prevState => ({ ...prevState, [name]: value }));
+     const onChange = (e: any, type: string) => {
+        let { name, value } = e.target;
+        if (type === "number") {
+            value = Number(value)
+            setState((prevState: any) => ({ ...prevState, [name]: value }));
+        }
+        else if (type == "boolean") {
+
+            value = Boolean(value)
+            setState((prevState: any) => ({ ...prevState, [name]: value }));
+        }
+        else {
+            setState((prevState: any) => ({ ...prevState, [name]: value }));
+        }
     };
+
 
     const [initialState, setInitialState ] = useState({ ...model });
 
@@ -67,6 +84,7 @@ const EditModelWindow = <
     }
 
 
+
     const innerOnClose = () => {
         clearState();
         onClose();
@@ -84,7 +102,7 @@ const EditModelWindow = <
                             onChange={onChange}
                             updateObject={objectState}
                             updateScheme={service.updateDtoSchema}
-
+                            specificInputMap={specificInputMap}
                             />
                             }
 
