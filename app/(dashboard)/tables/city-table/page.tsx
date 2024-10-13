@@ -63,8 +63,12 @@ const page = () => {
     }
 
     const displayCountry:RenderFunction = (value: GetCountryDto) => {
-      return <Icon icon={value.icon}
-      />
+      return <div  className="flex items-center gap-2">
+            <div className="flex items-center">
+                  <Icon icon={value.icon} className="mr-2" />
+                  <span>{value.name}</span>
+                </div>
+          </div>
     }
 
   return <ModelLayout icon={<Icon icon="solar:city-linear" />} title="Cities"
