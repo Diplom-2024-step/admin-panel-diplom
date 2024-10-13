@@ -14,9 +14,11 @@ import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/butto
 import ButtonForOpenUpdateModalWindowProps from "@/types/model-windows/buttons/update-buttons/ButtonForOpenUpdateModalWindowProps";
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
 import RenderFunction from "@/types/table/RenderFunction";
+import { RoomTypeService } from "@/service/crudServices/RoomTypeService";
+import { GetRoomTypeDto } from "@/AppDtos/Dto/Models/RoomTypes/get-room-type-dto";
 
 const page = () => {
-  let countryService = new CountryService();
+  let roomTypeService = new RoomTypeService();
 
   const returnButtonForOpenCreateWindow: ReturnButtonForOpenCreateWindowFunction<
     CrudService<ModelDto, object, ModelDto>
@@ -30,12 +32,12 @@ const page = () => {
   };
 
   const returnButtonForOpenUpdateWindow: ReturnButtonForOpenUpdateWindowFunction<
-    GetCountryDto,
-    CrudService<GetCountryDto, object, ModelDto>
+    GetRoomTypeDto,
+    CrudService<GetRoomTypeDto, object, ModelDto>
   > = (
-    model: GetCountryDto,
-    service: CrudService<GetCountryDto, object, ModelDto>,
-    setModel: (model: GetCountryDto) => void
+    model: GetRoomTypeDto,
+    service: CrudService<GetRoomTypeDto, object, ModelDto>,
+    setModel: (model: GetRoomTypeDto) => void
   ) => {
     return (
       <ButtonForOpenUpdateModalWindow
@@ -47,20 +49,15 @@ const page = () => {
     );
   };
 
-  const displayIcon: RenderFunction = (value: any) => {
-    console.debug(value);
-    return <Icon icon={value} />;
-  };
-
   return (
     <ModelLayout
-      icon={<Icon icon="solar:globus-bold-duotone" />}
-      title="Countries"
-      service={countryService}
+      icon={<Icon icon="fluent:conference-room-20-filled" />}
+      title="RoomTypes"
+      service={roomTypeService}
       createButton={returnButtonForOpenCreateWindow}
       updateButton={returnButtonForOpenUpdateWindow}
-      accessibleColumns={["icon", "name"]}
-      displayColumnsMap={new Map([["icon", displayIcon]])}
+      accessibleColumns={["id", "name"]}
+      displayColumnsMap={new Map()}
       specificSort={new Map()}
     />
   );
