@@ -37,6 +37,7 @@ import ReturnButtonForOpenCreateWindowFunction from "@/types/model-windows/butto
 import { GetCountryDto } from "@/AppDtos/Dto/Models/Countries/get-country-dto";
 import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/buttons/update-buttons/ReturnButtonForOpenUpdateWindowFunction";
 import Service from "@/service/shared/Service";
+import RenderFunction from "@/types/table/RenderFunction";
 
 const classNames: SlotsToClasses<TableSlots> = {
   wrapper: [
@@ -80,11 +81,13 @@ export interface ModelTableProps<TGetModelDto extends ModelDto> {
   columnHeaders?: ColumnInfos<TGetModelDto>;
   createButton: ReturnButtonForOpenCreateWindowFunction<CrudService<ModelDto, object, ModelDto>>;
   updateButton: ReturnButtonForOpenUpdateWindowFunction<TGetModelDto, CrudService<TGetModelDto, object, ModelDto>>;
-
+  displayColumnsMap: Map<string, RenderFunction>;
+  specificSort: Map<string, string>
+  accessibleColumns: string[];
 }
 
 const ModelTable = <TGetModelDto extends ModelDto>
-({ service, columnHeaders, createButton, updateButton   }: ModelTableProps<TGetModelDto>) => {
+({ service, columnHeaders, createButton, updateButton, displayColumnsMap, accessibleColumns, specificSort   }: ModelTableProps<TGetModelDto>) => {
   const status = useAuthService(service);
   const [page, setPage] = useSearchParam("page");
   const [perPage, setPerPage] = useSearchParam("perPage");
@@ -99,10 +102,14 @@ const ModelTable = <TGetModelDto extends ModelDto>
 
   const getDtoSchema = service.getDtoSchema;
 
-  const columns = Object.entries(getDtoSchema.shape).filter(([, value]) =>
-    accessibleTypes.find((type) => value instanceof type))
-  .map(([key, value]) => ({ key: key as keyof TGetModelDto, value: value as AccessibleTypes }))
-  .reverse();
+  // const columns = Object.entries(getDtoSchema.shape).filter(([, value]) =>
+  //   accessibleTypes.find((type) => value instanceof type))
+  // .map(([key, value]) => ({ key: key as keyof TGetModelDto, value: value as AccessibleTypes }))
+  // .reverse();
+
+  const columns = Object.entries(getDtoSchema.shape)
+  .filter(([key, value]) => (accessibleColumns as any as string[]).includes(key))
+  .map(([key, value]) => ({key: key as keyof TGetModelDto, value: value})).reverse();
 
 
   const columnInfos: ColumnInfos<TGetModelDto> = {
@@ -118,6 +125,11 @@ const ModelTable = <TGetModelDto extends ModelDto>
   const columnKeys = [...columns.map(({ key }) => ({ key })), { key: "actions" }];
 
   const sortHandler = useCallback((sortDescriptor: SortDescriptor) => {
+    if(specificSort.has(sortDescriptor.column as string))
+      {
+        sortDescriptor.column = specificSort.get(sortDescriptor.column as string);
+      }
+
     setSortDescriptor(sortDescriptor);
   }, []);
 
@@ -171,14 +183,24 @@ const ModelTable = <TGetModelDto extends ModelDto>
         </div>
       );
     }
-
-    const columnValue = columns.find((c) => c.key === column)?.value;
+ const columnValue = columns.find((c) => c.key === column)?.value;
     const columnName = Object.entries(accessibleNameTypes).find(([, type]) => columnValue instanceof type)
-      ?.[0] as AccessibleTypeNames;
+      ?.[0] as keyof TGetModelDto;
+
+    if (displayColumnsMap.has(column as any))
+      {
+        const fun = displayColumnsMap.get(column as any);
+
+        return fun!(getKeyValue(item, column));
+      }
+
+
+
+   
     const columnInfo = columnInfos[column as keyof TGetModelDto];
     const value = getKeyValue(item, column);
 
-    return columnInfo?.render?.(value) ?? transforms[columnName]?.(value) ?? value;
+    return columnInfo?.render?.(value) ?? transforms[columnName as AccessibleTypeNames]?.(value) ?? value;
   }, [columns]);
 
   const loadItems = useCallback(async () => {

@@ -66,9 +66,6 @@ const CountryInput: SpecificInput = ({
   const innerOnSelectionChanged = (keys: SharedSelection) => {
     var arrayKeys = [...keys];
 
-    console.debug(arrayKeys[0].toString());
-    setValue(arrayKeys[0].toString());
-
 
     onChange({
       target: {
@@ -91,11 +88,11 @@ const CountryInput: SpecificInput = ({
             required={true}
             className="max-w-xs"
             items={items?.models}
-            defaultSelectedKeys={[value]}
+            defaultSelectedKeys={[currectValue]}
             label="Select the country"
             placeholder="Select the country"
             onSelectionChange={innerOnSelectionChanged}
-            selectedKeys={[value]}
+            selectedKeys={[currectValue]}
                   renderValue={(items: SelectedItems<GetCountryDto>) => {
         return items.map((item) => (
           <div key={item.key} className="flex items-center gap-2">
