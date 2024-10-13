@@ -13,6 +13,7 @@ import { ModelDto } from "@/AppDtos/Shared/model-dto";
 import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/buttons/update-buttons/ReturnButtonForOpenUpdateWindowFunction";
 import ButtonForOpenUpdateModalWindowProps from "@/types/model-windows/buttons/update-buttons/ButtonForOpenUpdateModalWindowProps";
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
+import RenderFunction from "@/types/table/RenderFunction";
 
 const page = () => {
   let countryService = new CountryService();
@@ -45,14 +46,31 @@ const page = () => {
         specificInputMap={new Map()}
       
       />
-
     }
+
+    const displayIcon:RenderFunction = (value: any) => {
+      console.debug(value);
+      return <Icon icon={value}
+      />
+    }
+
+
 
   return <ModelLayout icon={<Icon icon="solar:globus-bold-duotone" />} title="Countries"
                       service={countryService} 
                       createButton={returnButtonForOpenCreateWindow}
                       updateButton={returnButtonForOpenUpdateWindow}
-                      
+                      accessibleColumns={
+                        ["icon", "name"]
+
+                      }
+                      displayColumnsMap={
+                        new Map([
+                          ["icon", displayIcon]
+                        ]
+                        )
+                      }
+                      specificSort={new Map()}
                       />;
 };
 

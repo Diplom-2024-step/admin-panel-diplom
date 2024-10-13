@@ -13,6 +13,8 @@ import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/butto
 import { GetCityDto } from "@/AppDtos/Dto/Models/Hotels/get-city-dto";
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
 import SpecificInput from "@/types/model-windows/specific-inputs/SpecificInput";
+import RenderFunction from "@/types/table/RenderFunction";
+import { GetCountryDto } from "@/AppDtos/Dto/Models/Countries/get-country-dto";
 
 const page = () => {
 
@@ -60,10 +62,27 @@ const page = () => {
 
     }
 
+    const displayCountry:RenderFunction = (value: GetCountryDto) => {
+      return <Icon icon={value.icon}
+      />
+    }
+
   return <ModelLayout icon={<Icon icon="solar:city-linear" />} title="Cities"
                       service={new CityService()}
                       createButton={returnButtonForOpenCreateWindow}
                       updateButton={returnButtonForOpenUpdateWindow}
+                      accessibleColumns={
+                        ["name", "latitud", "longitud", "country"]
+
+                      }
+                      displayColumnsMap={
+                        new Map([
+                          ["country", displayCountry]
+                        ])
+                      }
+                      specificSort={new Map([[
+                        "country", "Country.Name"
+                      ]])}
                       />;
 };
 
