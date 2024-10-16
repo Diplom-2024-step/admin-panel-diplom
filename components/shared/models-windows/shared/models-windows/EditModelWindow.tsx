@@ -2,7 +2,7 @@
 import { ModelDto } from '@/AppDtos/Shared/model-dto'
 import { CrudService } from '@/service/shared/CrudService'
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { ZodError } from 'zod';
 import GenerateEditInputForUpdateDtoScheme from '../generated-inputs/GenerateEditInputForUpdateDtoScheme';
 import ZodErrorModalWindow from './ZodErrorModalWindow';
@@ -18,7 +18,8 @@ const EditModelWindow = <
             model,
             service,
             setModel,
-            specificInputMap
+            specificInputMap = new Map([]),
+            specificUpdateMap = new Map([])
 
         }: {
             isOpen: boolean,
@@ -26,7 +27,8 @@ const EditModelWindow = <
             model: TGetModelDto,
             service: Service,
             setModel: (model : TGetModelDto) => void;
-            specificInputMap: Map<string, FunctionForReturningSpecificInput<ModelDto>>
+            specificInputMap: Map<string, FunctionForReturningSpecificInput<ModelDto>>;
+            specificUpdateMap: Map<string, (innerSetState: React.SetStateAction<any>, updateObject: TGetModelDto) => void>
         }) => {
 
 
@@ -37,6 +39,15 @@ const EditModelWindow = <
 
   const [isError, setIsError] = useState(false);
   const [errors, setErros] = useState<Zod.ZodIssue[]>([]);
+
+
+  useEffect(() => {
+    specificUpdateMap.forEach((key, value) => {
+        key(setState, objectState);
+    });
+  },
+    
+  []);
 
 
      const onChange = (e: any, type: string) => {
@@ -65,6 +76,7 @@ const EditModelWindow = <
     const handleSubmit = async () => {
         objectState.id = model.id;
         try {
+            console.debug(objectState);
             await service.update(objectState);
             setState({... objectState});
             setInitialState({...objectState});

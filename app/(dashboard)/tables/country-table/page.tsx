@@ -14,6 +14,9 @@ import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/butto
 import ButtonForOpenUpdateModalWindowProps from "@/types/model-windows/buttons/update-buttons/ButtonForOpenUpdateModalWindowProps";
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
 import RenderFunction from "@/types/table/RenderFunction";
+import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
+import ViewDetailsWindow from "@/components/shared/models-windows/shared/models-windows/ViewDetailsWindow";
+import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
 
 const page = () => {
   let countryService = new CountryService();
@@ -44,6 +47,7 @@ const page = () => {
         service={service}
         setModel={setModel}
         specificInputMap={new Map()}
+        specificUpdateMap={new Map()}
       
       />
     }
@@ -54,12 +58,21 @@ const page = () => {
       />
     }
 
+    const ReturnButtonForOpenViewDetailWindowFunction : ReturnButtonForOpenViewDetailWindowFunction<GetCountryDto> = (model:GetCountryDto) => 
+    {
+      return <ButtonForOpenViewDetailModalWindow
+      model={model}
+      specificRenderMap={new Map()}
+      />
+    }
+
 
 
   return <ModelLayout icon={<Icon icon="solar:globus-bold-duotone" />} title="Countries"
                       service={countryService} 
                       createButton={returnButtonForOpenCreateWindow}
                       updateButton={returnButtonForOpenUpdateWindow}
+                      viewDetailButton={ReturnButtonForOpenViewDetailWindowFunction}
                       accessibleColumns={
                         ["icon", "name"]
 
@@ -70,7 +83,8 @@ const page = () => {
                         ]
                         )
                       }
-                      specificSort={new Map()}
+                      dontAllowSort={[]}
+
                       />;
 };
 
