@@ -30,7 +30,7 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
     updateObject,
     onChange,
     updateScheme,
-    specificInputMap
+    specificInputMap = new Map()
 }: GenerateEditInputForUpdateDtoSchemeProps<T>): JSX.Element {
 
     const fieldToTypeMap = new Map<string, AccessibleTypes>();
@@ -52,6 +52,8 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
         if (specificInputMap.has(field as string))
             {
                 const func = specificInputMap.get(field as string);
+
+                console.debug(fieldValue);
 
                 return func!(onChange, fieldValue || '');
             }

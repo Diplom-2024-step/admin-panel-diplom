@@ -14,7 +14,8 @@ const ButtonForOpenUpdateModalWindow = <
          model,
          service,
          setModel,
-         specificInputMap
+         specificInputMap = new Map([]),
+         specificUpdateMap = new Map([])
          }: ButtonForOpenUpdateModalWindowProps<TGetModelDto, Service>) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -40,6 +41,8 @@ const ButtonForOpenUpdateModalWindow = <
                 service={service}
                 setModel={setModel}
                 specificInputMap={specificInputMap}
+                specificUpdateMap={specificUpdateMap}
+
                 />
         </>
     )

@@ -29,15 +29,12 @@ import { ReturnPageDto } from "@/AppDtos/Shared/return-page-dto";
 import { filterPaginationDtoSchema } from "@/AppDtos/Shared/filter-pagination-dto";
 import { SortOrder } from "@/AppDtos/Shared/sort-order";
 import { ModelDto } from "@/AppDtos/Shared/model-dto";
-import ButtonForOpenUpdateModalWindow from "../shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
-import router from "next/router";
-import ButtonForOpenCreateModalWindow from "../shared/models-windows/shared/buttons/ButtonForOpenCreateModalWindow";
-import ButtonForOpenCreateModalWindowProps from "@/types/model-windows/buttons/create-buttons/ButtonForOpenCreateModalWindowProps";
 import ReturnButtonForOpenCreateWindowFunction from "@/types/model-windows/buttons/create-buttons/ReturnButtonForOpenCreateWindowFunction";
-import { GetCountryDto } from "@/AppDtos/Dto/Models/Countries/get-country-dto";
 import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/buttons/update-buttons/ReturnButtonForOpenUpdateWindowFunction";
-import Service from "@/service/shared/Service";
 import RenderFunction from "@/types/table/RenderFunction";
+import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
+import useGetPageOfItems from "@/hooks/useGetPageOfItems";
+import ViewDetailsWindow from "../shared/models-windows/shared/models-windows/ViewDetailsWindow";
 
 const classNames: SlotsToClasses<TableSlots> = {
   wrapper: [
@@ -81,13 +78,22 @@ export interface ModelTableProps<TGetModelDto extends ModelDto> {
   columnHeaders?: ColumnInfos<TGetModelDto>;
   createButton: ReturnButtonForOpenCreateWindowFunction<CrudService<ModelDto, object, ModelDto>>;
   updateButton: ReturnButtonForOpenUpdateWindowFunction<TGetModelDto, CrudService<TGetModelDto, object, ModelDto>>;
+  viewDetailButton: ReturnButtonForOpenViewDetailWindowFunction<TGetModelDto>;
   displayColumnsMap: Map<string, RenderFunction>;
-  specificSort: Map<string, string>
+  dontAllowSort: string[];
   accessibleColumns: string[];
 }
 
 const ModelTable = <TGetModelDto extends ModelDto>
-({ service, columnHeaders, createButton, updateButton, displayColumnsMap, accessibleColumns, specificSort   }: ModelTableProps<TGetModelDto>) => {
+  ({
+    service,
+    columnHeaders,
+    createButton,
+    updateButton,
+    viewDetailButton,
+    displayColumnsMap,
+    accessibleColumns,
+    dontAllowSort }: ModelTableProps<TGetModelDto>) => {
   const status = useAuthService(service);
   const [page, setPage] = useSearchParam("page");
   const [perPage, setPerPage] = useSearchParam("perPage");
@@ -102,14 +108,9 @@ const ModelTable = <TGetModelDto extends ModelDto>
 
   const getDtoSchema = service.getDtoSchema;
 
-  // const columns = Object.entries(getDtoSchema.shape).filter(([, value]) =>
-  //   accessibleTypes.find((type) => value instanceof type))
-  // .map(([key, value]) => ({ key: key as keyof TGetModelDto, value: value as AccessibleTypes }))
-  // .reverse();
-
   const columns = Object.entries(getDtoSchema.shape)
-  .filter(([key, value]) => (accessibleColumns as any as string[]).includes(key))
-  .map(([key, value]) => ({key: key as keyof TGetModelDto, value: value})).reverse();
+    .filter(([key, value]) => (accessibleColumns as any as string[]).includes(key))
+    .map(([key, value]) => ({ key: key as keyof TGetModelDto, value: value })).reverse();
 
 
   const columnInfos: ColumnInfos<TGetModelDto> = {
@@ -125,11 +126,6 @@ const ModelTable = <TGetModelDto extends ModelDto>
   const columnKeys = [...columns.map(({ key }) => ({ key })), { key: "actions" }];
 
   const sortHandler = useCallback((sortDescriptor: SortDescriptor) => {
-    if(specificSort.has(sortDescriptor.column as string))
-      {
-        sortDescriptor.column = specificSort.get(sortDescriptor.column as string);
-      }
-
     setSortDescriptor(sortDescriptor);
   }, []);
 
@@ -138,13 +134,12 @@ const ModelTable = <TGetModelDto extends ModelDto>
   const renderCell = useCallback((item: any, column: string | number) => {
 
 
-    const updateModelInItems = (item:TGetModelDto) =>
-    {
+    const updateModelInItems = (item: TGetModelDto) => {
       const index = items?.models.findIndex(e => e.id === item.id);
 
-      if (items?.models !== undefined){
+      if (items?.models !== undefined) {
         items!.models[index as number] = item;
-        setItems({...items} as any);
+        setItems({ ...items } as any);
       }
 
     }
@@ -154,87 +149,67 @@ const ModelTable = <TGetModelDto extends ModelDto>
     if (column === "actions") {
       return (
         <div className="relative flex items-center gap-2">
-          <Tooltip content="Details">
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EyeIcon />
-              </span>
-          </Tooltip>
+          {
+            viewDetailButton(
+              item
+            )
+          }
           {updateButton(
             item,
             service,
             updateModelInItems
           )}
           <Tooltip color="danger" content="Delete">
-              <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                <DeleteIcon 
-                  onClick={
-                    () => 
-                      {
-                        service.delete(item.id)
-                        items!.models = items?.models.filter(e => e.id !== item.id) || [];
-                        items!.total -= 1;
-                        setItems({...items} as any);
-                      }
+            <span className="text-lg text-danger cursor-pointer active:opacity-50">
+              <DeleteIcon
+                onClick={
+                  () => {
+                    service.delete(item.id)
+                    items!.models = items?.models.filter(e => e.id !== item.id) || [];
+                    items!.total -= 1;
+                    setItems({ ...items } as any);
                   }
-                
-                />
-              </span>
+                }
+
+              />
+            </span>
           </Tooltip>
         </div>
       );
     }
- const columnValue = columns.find((c) => c.key === column)?.value;
+    const columnValue = columns.find((c) => c.key === column)?.value;
     const columnName = Object.entries(accessibleNameTypes).find(([, type]) => columnValue instanceof type)
       ?.[0] as keyof TGetModelDto;
 
-    if (displayColumnsMap.has(column as any))
-      {
-        const fun = displayColumnsMap.get(column as any);
+    if (displayColumnsMap.has(column as any)) {
+      const fun = displayColumnsMap.get(column as any);
 
-        return fun!(getKeyValue(item, column));
-      }
-
+      return fun!(getKeyValue(item, column));
+    }
 
 
-   
+
+
     const columnInfo = columnInfos[column as keyof TGetModelDto];
     const value = getKeyValue(item, column);
 
     return columnInfo?.render?.(value) ?? transforms[columnName as AccessibleTypeNames]?.(value) ?? value;
   }, [columns]);
 
-  const loadItems = useCallback(async () => {
-    setLoadingState("loading");
-    setError(undefined);
-    setPerPageError(undefined);
-    if (status !== "success") {
-      setLoadingState(status);
-      return;
-    }
-    try {
-      setItems(undefined);
-      setItems((await service.getAll({
-        pageNumber: page ? parseInt(page) : 1,
-        pageSize: perPage ? parseInt(perPage) || 10 : 10,
-        filters: [],
-        sorts: sortDescriptor?.column ? [{
-          column: toPascalCase(sortDescriptor.column.toString()),
-          sortOrder: sortDescriptor.direction === "ascending" ? SortOrder.Asc : SortOrder.Desc
-        }] : []
-      })));
-      setLoadingState("idle");
-    } catch (e) {
-      if (e instanceof ZodError) {
-        setError(Object.entries(e.formErrors.fieldErrors).map(([key, value]) =>
-          `\n${toTitleCase(key)}: ${value}`).join(", "));
-        if (e.formErrors.fieldErrors.pageSize) setPerPageError(e.formErrors.fieldErrors.pageSize.toString());
-      } else if (e instanceof Error)
-        setError(e.message);
-      else
-        setError(`${e}`);
-      setLoadingState("error");
-    }
-  }, [page, sortDescriptor, perPage]);
+  const loadItems = useGetPageOfItems<
+    TGetModelDto,
+    typeof service
+  >(
+    service,
+    perPage,
+    page,
+    sortDescriptor,
+    setLoadingState,
+    setError,
+    setPerPage,
+    setItems,
+    status
+  );
 
   useEffect(() => {
     loadItems().then();
@@ -252,9 +227,9 @@ const ModelTable = <TGetModelDto extends ModelDto>
         <TableHeader columns={columnKeys}>
           {(column) =>
             <TableColumn className="items-center"
-                         key={column.key.toString()}
-                         align={column.key === "actions" ? "center" : "start"}
-                         allowsSorting={column.key !== "actions"}>
+              key={column.key.toString()}
+              align={column.key === "actions" ? "center" : "start"}
+            allowsSorting={column.key !== "actions" || !dontAllowSort.includes(column.key)}>
               {columnInfos[column.key]?.title ?? toTitleCase(column.key.toString())}
             </TableColumn>}
         </TableHeader>
@@ -291,7 +266,7 @@ const ModelTable = <TGetModelDto extends ModelDto>
           isBlurred={true}
         />
 
-          {createButton(service)}
+        {createButton(service)}
 
         {items && items.howManyPages > 0 ? (
           <Pagination

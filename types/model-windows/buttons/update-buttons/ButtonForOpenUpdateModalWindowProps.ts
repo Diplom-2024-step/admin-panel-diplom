@@ -10,5 +10,5 @@ export default interface ButtonForOpenUpdateModalWindowProps<
   service: Service;
   setModel: (model: TGetModelDto) => void;
   specificInputMap :Map<string, FunctionForReturningSpecificInput<ModelDto>>
-
+  specificUpdateMap: Map<string, (innerSetState: React.SetStateAction<any>, object:TGetModelDto) => void>
 }
