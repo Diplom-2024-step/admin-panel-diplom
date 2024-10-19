@@ -37,6 +37,11 @@ const hotels: SidebarButtonType[] = [
     text: "InRooms",
     url: "/tables/in-room-table",
   },
+  {
+    icon: <Icon className="text-2xl" icon="lsicon:order-edit-outline" />,
+    text: "OrderStatus",
+    url: "/tables/order-status-table",
+  },
 ];
 
 export default function DashboardBody({
