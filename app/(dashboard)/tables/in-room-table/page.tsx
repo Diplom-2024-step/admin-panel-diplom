@@ -14,13 +14,14 @@ import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/butto
 import ButtonForOpenUpdateModalWindowProps from "@/types/model-windows/buttons/update-buttons/ButtonForOpenUpdateModalWindowProps";
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
 import RenderFunction from "@/types/table/RenderFunction";
-import { RoomTypeService } from "@/service/crudServices/RoomTypeService";
-import { GetRoomTypeDto } from "@/AppDtos/Dto/Models/RoomTypes/get-room-type-dto";
+import { GetTransportationTypeDto } from "@/AppDtos/Dto/Models/TransportationTypes/get-transportation-type-dto";
+import { InRoomService } from "@/service/crudServices/InRoomService";
+import { GetInRoomDto } from "@/AppDtos/Dto/Models/InRooms/get-in-room-dto";
 import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
 import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
 
 const page = () => {
-  let roomTypeService = new RoomTypeService();
+  let inRoomService = new InRoomService();
 
   const returnButtonForOpenCreateWindow: ReturnButtonForOpenCreateWindowFunction<
     CrudService<ModelDto, object, ModelDto>
@@ -34,12 +35,12 @@ const page = () => {
   };
 
   const returnButtonForOpenUpdateWindow: ReturnButtonForOpenUpdateWindowFunction<
-    GetRoomTypeDto,
-    CrudService<GetRoomTypeDto, object, ModelDto>
+    GetInRoomDto,
+    CrudService<GetInRoomDto, object, ModelDto>
   > = (
-    model: GetRoomTypeDto,
-    service: CrudService<GetRoomTypeDto, object, ModelDto>,
-    setModel: (model: GetRoomTypeDto) => void
+    model: GetInRoomDto,
+    service: CrudService<GetInRoomDto, object, ModelDto>,
+    setModel: (model: GetInRoomDto) => void
   ) => {
     return (
       <ButtonForOpenUpdateModalWindow
@@ -53,8 +54,8 @@ const page = () => {
   };
 
   const returnButtonForOpenViewDetailWindowFunction: ReturnButtonForOpenViewDetailWindowFunction<
-    GetRoomTypeDto
-  > = (model: GetRoomTypeDto) => {
+    GetInRoomDto
+  > = (model: GetInRoomDto) => {
     return (
       <ButtonForOpenViewDetailModalWindow
         model={model}
@@ -65,13 +66,13 @@ const page = () => {
 
   return (
     <ModelLayout
-      icon={<Icon icon="fluent:conference-room-20-filled" />}
-      title="RoomTypes"
-      service={roomTypeService}
+      icon={<Icon icon="fontisto:room" />}
+      title="InRoom"
+      service={inRoomService}
       createButton={returnButtonForOpenCreateWindow}
       updateButton={returnButtonForOpenUpdateWindow}
-      dontAllowSort={[]}
       viewDetailButton={returnButtonForOpenViewDetailWindowFunction}
+      dontAllowSort={[]}
       accessibleColumns={["id", "name"]}
       displayColumnsMap={new Map()}
     />
