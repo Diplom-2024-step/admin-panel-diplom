@@ -17,9 +17,11 @@ import ViewDetailsWindow from "@/components/shared/models-windows/shared/models-
 import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
 import { OrderStatusService } from "@/service/crudServices/OrderStatusService";
 import { GetOrderStatusDto } from "@/AppDtos/Dto/Models/OrderStatuses/get-order-status-dto";
+import { BeachTypeService } from "@/service/crudServices/BeachTypeService";
+import { GetBeachTypeDto } from "@/AppDtos/Dto/Models/BeachTypes/get-beach-type-dto";
 
 const page = () => {
-  let orderStatusService = new OrderStatusService();
+  let beachTypeService = new BeachTypeService();
 
   const returnButtonForOpenCreateWindow: ReturnButtonForOpenCreateWindowFunction<
     CrudService<ModelDto, object, ModelDto>
@@ -33,12 +35,12 @@ const page = () => {
   };
 
   const returnButtonForOpenUpdateWindow: ReturnButtonForOpenUpdateWindowFunction<
-    GetOrderStatusDto,
-    CrudService<GetOrderStatusDto, object, ModelDto>
+    GetBeachTypeDto,
+    CrudService<GetBeachTypeDto, object, ModelDto>
   > = (
-    model: GetOrderStatusDto,
-    service: CrudService<GetOrderStatusDto, object, ModelDto>,
-    setModel: (model: GetOrderStatusDto) => void
+    model: GetBeachTypeDto,
+    service: CrudService<GetBeachTypeDto, object, ModelDto>,
+    setModel: (model: GetBeachTypeDto) => void
   ) => {
     return (
       <ButtonForOpenUpdateModalWindow
@@ -57,8 +59,8 @@ const page = () => {
   };
 
   const ReturnButtonForOpenViewDetailWindowFunction: ReturnButtonForOpenViewDetailWindowFunction<
-    GetOrderStatusDto
-  > = (model: GetOrderStatusDto) => {
+    GetBeachTypeDto
+  > = (model: GetBeachTypeDto) => {
     return (
       <ButtonForOpenViewDetailModalWindow
         model={model}
@@ -69,9 +71,9 @@ const page = () => {
 
   return (
     <ModelLayout
-      icon={<Icon icon="lsicon:order-edit-outline" />}
-      title="OrderStatus"
-      service={orderStatusService}
+      icon={<Icon icon="mdi:beach" />}
+      title="BeachType"
+      service={beachTypeService}
       createButton={returnButtonForOpenCreateWindow}
       updateButton={returnButtonForOpenUpdateWindow}
       viewDetailButton={ReturnButtonForOpenViewDetailWindowFunction}

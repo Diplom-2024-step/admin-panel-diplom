@@ -39,8 +39,13 @@ const hotels: SidebarButtonType[] = [
   },
   {
     icon: <Icon className="text-2xl" icon="lsicon:order-edit-outline" />,
-    text: "OrderStatus",
+    text: "OrderStatuses",
     url: "/tables/order-status-table",
+  },
+  {
+    icon: <Icon className="text-2xl" icon="mdi:beach" />,
+    text: "BeachTypes",
+    url: "/tables/beach-type-table",
   },
 ];
 
