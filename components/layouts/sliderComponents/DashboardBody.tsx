@@ -27,10 +27,17 @@ const hotels: SidebarButtonType[] = [
     text: "RoomTypes",
     url: "/tables/room-type-table",
   },
+
   {
     icon: <Icon className="text-2xl" icon="fa6-solid:truck-plane" />,
     text: "TransportationTypes",
     url: "/tables/transportation-type-table",
+  },
+
+  {
+    icon: <Icon className="text-2xl" icon="fa6-solid:hotel" />,
+    text: "Hotels",
+    url: "/tables/hotel-table",
   },
 ];
 

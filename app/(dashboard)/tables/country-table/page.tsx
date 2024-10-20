@@ -47,7 +47,6 @@ const page = () => {
   }
 
   const displayIcon: RenderFunction = (value: any) => {
-    console.debug(value);
     return <Icon icon={value}
     />
   }

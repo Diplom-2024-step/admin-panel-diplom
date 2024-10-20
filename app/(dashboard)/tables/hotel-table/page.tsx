@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { ReactElement } from "react";
 import ModelLayout from "@/components/layouts/ModelLayout";
 import { Icon } from "@iconify-icon/react";
@@ -9,13 +9,13 @@ import { CrudService } from "@/service/shared/CrudService";
 import { ModelDto } from "@/AppDtos/Shared/model-dto";
 import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/buttons/update-buttons/ReturnButtonForOpenUpdateWindowFunction";
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
-import { RoomTypeService } from "@/service/crudServices/RoomTypeService";
-import { GetRoomTypeDto } from "@/AppDtos/Dto/Models/RoomTypes/get-room-type-dto";
+import { HotelService } from "@/service/crudServices/HotelService";
 import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
 import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
+import { GetHotelDto } from "@/AppDtos/Dto/Models/Hotels/get-hotel-dto";
 
 const page = () => {
-  let roomTypeService = new RoomTypeService();
+  let roomTypeService = new HotelService();
 
   const returnButtonForOpenCreateWindow: ReturnButtonForOpenCreateWindowFunction<
     CrudService<ModelDto, object, ModelDto>
@@ -29,12 +29,12 @@ const page = () => {
   };
 
   const returnButtonForOpenUpdateWindow: ReturnButtonForOpenUpdateWindowFunction<
-    GetRoomTypeDto,
-    CrudService<GetRoomTypeDto, object, ModelDto>
+    GetHotelDto,
+    CrudService<GetHotelDto, object, ModelDto>
   > = (
-    model: GetRoomTypeDto,
-    service: CrudService<GetRoomTypeDto, object, ModelDto>,
-    setModel: (model: GetRoomTypeDto) => void
+    model: GetHotelDto,
+    service: CrudService<GetHotelDto, object, ModelDto>,
+    setModel: (model: GetHotelDto) => void
   ) => {
     return (
       <ButtonForOpenUpdateModalWindow
@@ -47,7 +47,7 @@ const page = () => {
     );
   };
 
-   const returnButtonForOpenViewDetailWindow: ReturnButtonForOpenViewDetailWindowFunction<GetRoomTypeDto> = (model: GetRoomTypeDto) => {
+   const returnButtonForOpenViewDetailWindow: ReturnButtonForOpenViewDetailWindowFunction<GetHotelDto> = (model: GetHotelDto) => {
     return <ButtonForOpenViewDetailModalWindow
       model={model}
       specificRenderMap={new Map()}
@@ -56,8 +56,8 @@ const page = () => {
 
   return (
     <ModelLayout
-      icon={<Icon icon="fluent:conference-room-20-filled" />}
-      title="RoomTypes"
+      icon={<Icon icon="fa6-solid:hotel" />}
+      title="Hotels"
       service={roomTypeService}
       createButton={returnButtonForOpenCreateWindow}
       dontAllowSort={[]}
@@ -69,4 +69,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default page
