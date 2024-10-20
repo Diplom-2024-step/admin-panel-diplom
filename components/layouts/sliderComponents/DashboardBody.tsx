@@ -32,6 +32,21 @@ const hotels: SidebarButtonType[] = [
     text: "TransportationTypes",
     url: "/tables/transportation-type-table",
   },
+  {
+    icon: <Icon className="text-2xl" icon="fontisto:room" />,
+    text: "InRooms",
+    url: "/tables/in-room-table",
+  },
+  {
+    icon: <Icon className="text-2xl" icon="lsicon:order-edit-outline" />,
+    text: "OrderStatuses",
+    url: "/tables/order-status-table",
+  },
+  {
+    icon: <Icon className="text-2xl" icon="mdi:beach" />,
+    text: "BeachTypes",
+    url: "/tables/beach-type-table",
+  },
 ];
 
 export default function DashboardBody({
