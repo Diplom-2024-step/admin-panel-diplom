@@ -6,6 +6,7 @@ import ButtonForOpenCreateModalWindowProps from '@/types/model-windows/buttons/c
 import { Button } from '@nextui-org/react'
 import React, { useState } from 'react'
 import CreateHotelModalWindow from '../create-modal-window/CreateHotelModalWindow'
+import { HotelService } from '@/service/crudServices/HotelService'
 
 const ButtonForOpenCreateModalWindowForHotel = <
   Service extends CrudService<ModelDto, object, ModelDto>>({
@@ -33,6 +34,7 @@ const ButtonForOpenCreateModalWindowForHotel = <
       </Button>
       <CreateHotelModalWindow
         isOpen={isModalOpen}
+        service={service as any as HotelService}
         onClose={closeModal}
       />
     </>

@@ -13,6 +13,7 @@ import { HotelService } from "@/service/crudServices/HotelService";
 import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
 import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
 import { GetHotelDto } from "@/AppDtos/Dto/Models/Hotels/get-hotel-dto";
+import ButtonForOpenCreateModalWindowForHotel from "@/components/for-models/hotels/buttons/ButtonForOpenCreateModalWindowForHotel";
 
 const page = () => {
   let roomTypeService = new HotelService();
@@ -21,7 +22,7 @@ const page = () => {
     CrudService<ModelDto, object, ModelDto>
   > = (service: CrudService<ModelDto, object, ModelDto>) => {
     return (
-      <ButtonForOpenCreateModalWindow
+      <ButtonForOpenCreateModalWindowForHotel
         service={service}
         specificInputMap={new Map()}
       />

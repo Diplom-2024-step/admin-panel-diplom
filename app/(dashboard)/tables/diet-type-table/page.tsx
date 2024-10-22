@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React from "react";
 import ModelLayout from "@/components/layouts/ModelLayout";
 import { Icon } from "@iconify-icon/react";
@@ -8,13 +8,13 @@ import { CrudService } from "@/service/shared/CrudService";
 import { ModelDto } from "@/AppDtos/Shared/model-dto";
 import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/buttons/update-buttons/ReturnButtonForOpenUpdateWindowFunction";
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
-import { InRoomService } from "@/service/crudServices/InRoomService";
-import { GetInRoomDto } from "@/AppDtos/Dto/Models/InRooms/get-in-room-dto";
+import { DietTypeService } from "@/service/crudServices/DietTypeService";
 import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
 import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
+import { GetDietTypeDto } from "@/AppDtos/Dto/Models/DietTypes/get-diet-type-dto";
 
 const page = () => {
-  let inRoomService = new InRoomService();
+  let dietTypeService = new DietTypeService();
 
   const returnButtonForOpenCreateWindow: ReturnButtonForOpenCreateWindowFunction<
     CrudService<ModelDto, object, ModelDto>
@@ -28,12 +28,12 @@ const page = () => {
   };
 
   const returnButtonForOpenUpdateWindow: ReturnButtonForOpenUpdateWindowFunction<
-    GetInRoomDto,
-    CrudService<GetInRoomDto, object, ModelDto>
+    GetDietTypeDto,
+    CrudService<GetDietTypeDto, object, ModelDto>
   > = (
-    model: GetInRoomDto,
-    service: CrudService<GetInRoomDto, object, ModelDto>,
-    setModel: (model: GetInRoomDto) => void
+    model: GetDietTypeDto,
+    service: CrudService<GetDietTypeDto, object, ModelDto>,
+    setModel: (model: GetDietTypeDto) => void
   ) => {
     return (
       <ButtonForOpenUpdateModalWindow
@@ -47,8 +47,8 @@ const page = () => {
   };
 
   const returnButtonForOpenViewDetailWindowFunction: ReturnButtonForOpenViewDetailWindowFunction<
-    GetInRoomDto
-  > = (model: GetInRoomDto) => {
+    GetDietTypeDto
+  > = (model: GetDietTypeDto) => {
     return (
       <ButtonForOpenViewDetailModalWindow
         model={model}
@@ -59,9 +59,9 @@ const page = () => {
 
   return (
     <ModelLayout
-      icon={<Icon icon="fontisto:room" />}
-      title="InRoom"
-      service={inRoomService}
+      icon={<Icon icon="fontisto:food-20-regular" />}
+      title="DietType"
+      service={dietTypeService}
       createButton={returnButtonForOpenCreateWindow}
       updateButton={returnButtonForOpenUpdateWindow}
       viewDetailButton={returnButtonForOpenViewDetailWindowFunction}

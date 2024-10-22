@@ -47,6 +47,11 @@ const hotels: SidebarButtonType[] = [
     text: "BeachTypes",
     url: "/tables/beach-type-table",
   },
+  {
+    icon: <Icon className="text-2xl" icon="fluent:food-20-regular" />,
+    text: "DietTypes",
+    url: "/tables/diet-type-table",
+  },
 ];
 
 export default function DashboardBody({

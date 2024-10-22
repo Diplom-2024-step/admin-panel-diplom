@@ -11,6 +11,8 @@ import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/butto
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
 import { RoomTypeService } from "@/service/crudServices/RoomTypeService";
 import { GetRoomTypeDto } from "@/AppDtos/Dto/Models/RoomTypes/get-room-type-dto";
+import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
+import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
 
 const page = () => {
   let roomTypeService = new RoomTypeService();
@@ -41,7 +43,6 @@ const page = () => {
         service={service}
         setModel={setModel}
         specificInputMap={new Map()}
-        specificUpdateMap={new Map()}
       />
     );
   };
@@ -73,8 +74,6 @@ const page = () => {
       dontAllowSort={[]}
       viewDetailButton={returnButtonForOpenViewDetailWindow}
       updateButton={returnButtonForOpenUpdateWindow}
-      dontAllowSort={[]}
-      viewDetailButton={returnButtonForOpenViewDetailWindowFunction}
       accessibleColumns={["id", "name"]}
       displayColumnsMap={new Map()}
       />
