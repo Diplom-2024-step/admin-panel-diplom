@@ -39,6 +39,7 @@ export default function RootLayout({ children }: Readonly<{
     >
 
     <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+      
       {children}
     </Providers>
     </body>

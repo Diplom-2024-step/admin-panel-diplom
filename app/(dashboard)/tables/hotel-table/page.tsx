@@ -1,26 +1,28 @@
-"use client";
-import React from "react";
+"use client"
+import React, { ReactElement } from "react";
 import ModelLayout from "@/components/layouts/ModelLayout";
 import { Icon } from "@iconify-icon/react";
+import CountryInput from "@/components/shared/models-windows/specific-inputs/CountryInput";
 import ButtonForOpenCreateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenCreateModalWindow";
 import ReturnButtonForOpenCreateWindowFunction from "@/types/model-windows/buttons/create-buttons/ReturnButtonForOpenCreateWindowFunction";
 import { CrudService } from "@/service/shared/CrudService";
 import { ModelDto } from "@/AppDtos/Shared/model-dto";
 import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/buttons/update-buttons/ReturnButtonForOpenUpdateWindowFunction";
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
-import { InRoomService } from "@/service/crudServices/InRoomService";
-import { GetInRoomDto } from "@/AppDtos/Dto/Models/InRooms/get-in-room-dto";
-import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
+import { HotelService } from "@/service/crudServices/HotelService";
 import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
+import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
+import { GetHotelDto } from "@/AppDtos/Dto/Models/Hotels/get-hotel-dto";
+import ButtonForOpenCreateModalWindowForHotel from "@/components/for-models/hotels/buttons/ButtonForOpenCreateModalWindowForHotel";
 
 const page = () => {
-  let inRoomService = new InRoomService();
+  let roomTypeService = new HotelService();
 
   const returnButtonForOpenCreateWindow: ReturnButtonForOpenCreateWindowFunction<
     CrudService<ModelDto, object, ModelDto>
   > = (service: CrudService<ModelDto, object, ModelDto>) => {
     return (
-      <ButtonForOpenCreateModalWindow
+      <ButtonForOpenCreateModalWindowForHotel
         service={service}
         specificInputMap={new Map()}
       />
@@ -28,48 +30,44 @@ const page = () => {
   };
 
   const returnButtonForOpenUpdateWindow: ReturnButtonForOpenUpdateWindowFunction<
-    GetInRoomDto,
-    CrudService<GetInRoomDto, object, ModelDto>
+    GetHotelDto,
+    CrudService<GetHotelDto, object, ModelDto>
   > = (
-    model: GetInRoomDto,
-    service: CrudService<GetInRoomDto, object, ModelDto>,
-    setModel: (model: GetInRoomDto) => void
+    model: GetHotelDto,
+    service: CrudService<GetHotelDto, object, ModelDto>,
+    setModel: (model: GetHotelDto) => void
   ) => {
     return (
       <ButtonForOpenUpdateModalWindow
+      specificUpdateMap={new Map()}
         model={model}
         service={service}
         setModel={setModel}
         specificInputMap={new Map()}
-        specificUpdateMap={new Map()}
       />
     );
   };
 
-  const returnButtonForOpenViewDetailWindowFunction: ReturnButtonForOpenViewDetailWindowFunction<
-    GetInRoomDto
-  > = (model: GetInRoomDto) => {
-    return (
-      <ButtonForOpenViewDetailModalWindow
-        model={model}
-        specificRenderMap={new Map()}
-      />
-    );
-  };
+   const returnButtonForOpenViewDetailWindow: ReturnButtonForOpenViewDetailWindowFunction<GetHotelDto> = (model: GetHotelDto) => {
+    return <ButtonForOpenViewDetailModalWindow
+      model={model}
+      specificRenderMap={new Map()}
+    />
+  }
 
   return (
     <ModelLayout
-      icon={<Icon icon="fontisto:room" />}
-      title="InRoom"
-      service={inRoomService}
+      icon={<Icon icon="fa6-solid:hotel" />}
+      title="Hotels"
+      service={roomTypeService}
       createButton={returnButtonForOpenCreateWindow}
-      updateButton={returnButtonForOpenUpdateWindow}
-      viewDetailButton={returnButtonForOpenViewDetailWindowFunction}
       dontAllowSort={[]}
+      viewDetailButton={returnButtonForOpenViewDetailWindow}
+      updateButton={returnButtonForOpenUpdateWindow}
       accessibleColumns={["id", "name"]}
       displayColumnsMap={new Map()}
-    />
+      />
   );
 };
 
-export default page;
+export default page

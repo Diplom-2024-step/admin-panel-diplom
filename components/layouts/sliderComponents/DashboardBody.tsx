@@ -23,14 +23,14 @@ const countries: SidebarButtonType[] = [
 
 const hotels: SidebarButtonType[] = [
   {
+    icon: <Icon className="text-2xl" icon="fa6-solid:hotel" />,
+    text: "Hotels",
+    url: "/tables/hotel-table",
+  },
+  {
     icon: <Icon className="text-2xl" icon="fluent:conference-room-20-filled" />,
     text: "RoomTypes",
     url: "/tables/room-type-table",
-  },
-  {
-    icon: <Icon className="text-2xl" icon="fa6-solid:truck-plane" />,
-    text: "TransportationTypes",
-    url: "/tables/transportation-type-table",
   },
   {
     icon: <Icon className="text-2xl" icon="fontisto:room" />,
@@ -46,6 +46,26 @@ const hotels: SidebarButtonType[] = [
     icon: <Icon className="text-2xl" icon="mdi:beach" />,
     text: "BeachTypes",
     url: "/tables/beach-type-table",
+  },
+  {
+    icon: <Icon className="text-2xl" icon="fluent:food-20-regular" />,
+    text: "DietTypes",
+    url: "/tables/diet-type-table",
+  },
+  {
+    icon: <Icon className="text-2xl" icon="guidance:reception-hotel-bell" />,
+    text: "InHotels",
+    url: "/tables/in-hotel-table",
+  },
+  {
+    icon: <Icon className="text-2xl" icon="tabler:mood-kid" />,
+    text: "ForKids",
+    url: "/tables/for-kids-table",
+  },
+{
+    icon: <Icon className="text-2xl" icon="material-symbols:sports-tennis" />,
+    text: "ForSport",
+    url: "/tables/for-sport-table",
   },
 ];
 

@@ -8,13 +8,14 @@ import { CrudService } from "@/service/shared/CrudService";
 import { ModelDto } from "@/AppDtos/Shared/model-dto";
 import ReturnButtonForOpenUpdateWindowFunction from "@/types/model-windows/buttons/update-buttons/ReturnButtonForOpenUpdateWindowFunction";
 import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenUpdateModalWindow";
-import { InRoomService } from "@/service/crudServices/InRoomService";
-import { GetInRoomDto } from "@/AppDtos/Dto/Models/InRooms/get-in-room-dto";
+import RenderFunction from "@/types/table/RenderFunction";
 import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
 import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
+import { InHotelService } from "@/service/crudServices/InHotelService";
+import { GetInHotelDto } from "@/AppDtos/Dto/Models/InHotels/get-in-hotel-dto";
 
 const page = () => {
-  let inRoomService = new InRoomService();
+  let inHotelService = new InHotelService();
 
   const returnButtonForOpenCreateWindow: ReturnButtonForOpenCreateWindowFunction<
     CrudService<ModelDto, object, ModelDto>
@@ -28,12 +29,12 @@ const page = () => {
   };
 
   const returnButtonForOpenUpdateWindow: ReturnButtonForOpenUpdateWindowFunction<
-    GetInRoomDto,
-    CrudService<GetInRoomDto, object, ModelDto>
+    GetInHotelDto,
+    CrudService<GetInHotelDto, object, ModelDto>
   > = (
-    model: GetInRoomDto,
-    service: CrudService<GetInRoomDto, object, ModelDto>,
-    setModel: (model: GetInRoomDto) => void
+    model: GetInHotelDto,
+    service: CrudService<GetInHotelDto, object, ModelDto>,
+    setModel: (model: GetInHotelDto) => void
   ) => {
     return (
       <ButtonForOpenUpdateModalWindow
@@ -46,9 +47,10 @@ const page = () => {
     );
   };
 
-  const returnButtonForOpenViewDetailWindowFunction: ReturnButtonForOpenViewDetailWindowFunction<
-    GetInRoomDto
-  > = (model: GetInRoomDto) => {
+
+  const ReturnButtonForOpenViewDetailWindowFunction: ReturnButtonForOpenViewDetailWindowFunction<
+    GetInHotelDto
+  > = (model: GetInHotelDto) => {
     return (
       <ButtonForOpenViewDetailModalWindow
         model={model}
@@ -59,15 +61,15 @@ const page = () => {
 
   return (
     <ModelLayout
-      icon={<Icon icon="fontisto:room" />}
-      title="InRoom"
-      service={inRoomService}
+      icon={<Icon icon="guidance:reception-hotel-bell" />}
+      title="InHotel"
+      service={inHotelService}
       createButton={returnButtonForOpenCreateWindow}
       updateButton={returnButtonForOpenUpdateWindow}
-      viewDetailButton={returnButtonForOpenViewDetailWindowFunction}
-      dontAllowSort={[]}
+      viewDetailButton={ReturnButtonForOpenViewDetailWindowFunction}
       accessibleColumns={["id", "name"]}
       displayColumnsMap={new Map()}
+      dontAllowSort={[]}
     />
   );
 };

@@ -5,13 +5,15 @@ import { useAuthService } from "@/hooks/auth";
 import { CountryService } from "@/service/crudServices/CountryService";
 import SpecificInput from "@/types/model-windows/specific-inputs/SpecificInput";
 import { useCallback, useEffect, useState } from "react";
-import { LoadingState } from "@react-types/shared";
+import { LoadingState, SortDescriptor } from "@react-types/shared";
 import { ZodError } from "zod";
 import { toTitleCase } from "@/utils/TextUtils";
 import LoadingCircle from "../../skeletons/LoadingCircle";
 import { Select, SelectedItems, SelectItem } from "@nextui-org/select";
 import { Icon } from "@iconify-icon/react";
 import { SharedSelection } from "@nextui-org/react";
+import useGetPageOfItems from "@/hooks/useGetPageOfItems";
+import useDebounceState from "@/hooks/useDebounceState";
 
 const CountryInput: SpecificInput = ({
   onChange,
@@ -19,48 +21,34 @@ const CountryInput: SpecificInput = ({
 }) => {
   let service = new CountryService();
 
+  const [perPage, setPerPage] = useState("50");
+  const page = "1";
+
   const status = useAuthService(service);
   const [value, setValue] = useState<string>("");
 
+  const [perPageState, setPerPageState] = useDebounceState(perPage, setPerPage, 500);
   const [items, setItems] = useState<ReturnPageDto<GetCountryDto>>();
   const [loadingState, setLoadingState] = useState<LoadingState>("loading");
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>();
   const [error, setError] = useState<string>();
   const [perPageError, setPerPageError] = useState<string>();
 
 
-  const loadItems = useCallback(async () => {
-    setLoadingState("loading");
-    setError(undefined);
-    setPerPageError(undefined);
-    if (status !== "success") {
-      setLoadingState(status);
-      return;
-    }
-    try {
-      setItems(undefined);
-      setItems((await service.getAll({
-        pageNumber: 1,
-        pageSize: 50,
-        filters: [],
-        sorts: []
-      })));
-      setLoadingState("idle");
-    } catch (e) {
-      if (e instanceof ZodError) {
-        setError(Object.entries(e.formErrors.fieldErrors).map(([key, value]) =>
-          `\n${toTitleCase(key)}: ${value}`).join(", "));
-        if (e.formErrors.fieldErrors.pageSize) setPerPageError(e.formErrors.fieldErrors.pageSize.toString());
-      } else if (e instanceof Error)
-        setError(e.message);
-      else
-        setError(`${e}`);
-      setLoadingState("error");
-    }
-  }, []);
-
-  useEffect(() => {
-    loadItems().then();
-  }, [loadItems]);
+  const loadItems = useGetPageOfItems<
+    GetCountryDto,
+    typeof service
+  >(
+    service,
+    "50",
+    "1",
+    sortDescriptor,
+    setLoadingState,
+    setError,
+    setPerPage,
+    setItems,
+    status
+  );
 
 
   const innerOnSelectionChanged = (keys: SharedSelection) => {
