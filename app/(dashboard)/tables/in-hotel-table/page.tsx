@@ -11,11 +11,11 @@ import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/s
 import RenderFunction from "@/types/table/RenderFunction";
 import ReturnButtonForOpenViewDetailWindowFunction from "@/types/model-windows/buttons/view-details-buttons/ReturnButtonForOpenViewDetailWindowFunction";
 import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
-import { BeachTypeService } from "@/service/crudServices/BeachTypeService";
-import { GetBeachTypeDto } from "@/AppDtos/Dto/Models/BeachTypes/get-beach-type-dto";
+import { InHotelService } from "@/service/crudServices/InHotelService";
+import { GetInHotelDto } from "@/AppDtos/Dto/Models/InHotels/get-in-hotel-dto";
 
 const page = () => {
-  let beachTypeService = new BeachTypeService();
+  let inHotelService = new InHotelService();
 
   const returnButtonForOpenCreateWindow: ReturnButtonForOpenCreateWindowFunction<
     CrudService<ModelDto, object, ModelDto>
@@ -29,12 +29,12 @@ const page = () => {
   };
 
   const returnButtonForOpenUpdateWindow: ReturnButtonForOpenUpdateWindowFunction<
-    GetBeachTypeDto,
-    CrudService<GetBeachTypeDto, object, ModelDto>
+    GetInHotelDto,
+    CrudService<GetInHotelDto, object, ModelDto>
   > = (
-    model: GetBeachTypeDto,
-    service: CrudService<GetBeachTypeDto, object, ModelDto>,
-    setModel: (model: GetBeachTypeDto) => void
+    model: GetInHotelDto,
+    service: CrudService<GetInHotelDto, object, ModelDto>,
+    setModel: (model: GetInHotelDto) => void
   ) => {
     return (
       <ButtonForOpenUpdateModalWindow
@@ -47,14 +47,10 @@ const page = () => {
     );
   };
 
-  const displayIcon: RenderFunction = (value: any) => {
-    console.debug(value);
-    return <Icon icon={value} />;
-  };
 
   const ReturnButtonForOpenViewDetailWindowFunction: ReturnButtonForOpenViewDetailWindowFunction<
-    GetBeachTypeDto
-  > = (model: GetBeachTypeDto) => {
+    GetInHotelDto
+  > = (model: GetInHotelDto) => {
     return (
       <ButtonForOpenViewDetailModalWindow
         model={model}
@@ -65,14 +61,14 @@ const page = () => {
 
   return (
     <ModelLayout
-      icon={<Icon icon="mdi:beach" />}
-      title="BeachType"
-      service={beachTypeService}
+      icon={<Icon icon="guidance:reception-hotel-bell" />}
+      title="InHotel"
+      service={inHotelService}
       createButton={returnButtonForOpenCreateWindow}
       updateButton={returnButtonForOpenUpdateWindow}
       viewDetailButton={ReturnButtonForOpenViewDetailWindowFunction}
-      accessibleColumns={["icon", "name"]}
-      displayColumnsMap={new Map([["icon", displayIcon]])}
+      accessibleColumns={["id", "name"]}
+      displayColumnsMap={new Map()}
       dontAllowSort={[]}
     />
   );
