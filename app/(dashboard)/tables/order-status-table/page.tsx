@@ -2,7 +2,7 @@
 import React, { ReactElement } from "react";
 import ModelLayout from "@/components/layouts/ModelLayout";
 import { Icon } from "@iconify-icon/react";
-import CountryInput from "@/components/shared/models-windows/specific-inputs/CountryInput";
+import CountryInput from "@/components/shared/models-windows/specific-inputs/singleInputes/CountryInput";
 import ButtonForOpenCreateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenCreateModalWindow";
 import OnChangeFunctionProps from "@/types/model-windows/specific-inputs/OnChangeFunctionProps";
 import ReturnButtonForOpenCreateWindowFunction from "@/types/model-windows/buttons/create-buttons/ReturnButtonForOpenCreateWindowFunction";

@@ -229,7 +229,7 @@ const ModelTable = <TGetModelDto extends ModelDto>
             <TableColumn className="items-center"
               key={column.key.toString()}
               align={column.key === "actions" ? "center" : "start"}
-            allowsSorting={column.key !== "actions" || !dontAllowSort.includes(column.key)}>
+            allowsSorting={column.key !== "Actions" || !dontAllowSort.includes(column.key)}>
               {columnInfos[column.key]?.title ?? toTitleCase(column.key.toString())}
             </TableColumn>}
         </TableHeader>

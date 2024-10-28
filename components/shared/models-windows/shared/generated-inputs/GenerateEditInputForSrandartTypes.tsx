@@ -1,10 +1,8 @@
 "use client"
-import { ModelDto } from '@/AppDtos/Shared/model-dto';
-import FunctionForReturningSpecificInput from '@/types/model-windows/specific-inputs/FunctionForReturningSpecificInput';
 import OnChangeFunctionProps from '@/types/model-windows/specific-inputs/OnChangeFunctionProps';
-import { Input, Select } from '@nextui-org/react';
-import React, { useCallback } from 'react';
-import { ZodString, ZodNumber, ZodBoolean, ZodDate, z, TypeOf, string, number } from 'zod';
+import { Input, Textarea } from '@nextui-org/react';
+import React, { useCallback } from 'react'
+import { z, ZodBoolean, ZodDate, ZodNumber, ZodString } from 'zod';
 
 const accessibleNameTypes = {
     string: ZodString,
@@ -19,19 +17,17 @@ const accessibleTypes = Object.values(accessibleNameTypes);
 
 type AccessibleTypes = InstanceType<typeof accessibleNameTypes[AccessibleTypeNames]>;
 
-interface GenerateEditInputForUpdateDtoSchemeProps<T extends Record<string, any>> {
+interface GenerateEditInputForSrandartTypesProps<T extends Record<string, any>> {
     updateObject: T;
     onChange: OnChangeFunctionProps;
     updateScheme: z.infer<any>;
-    specificInputMap: Map<string, FunctionForReturningSpecificInput<ModelDto>>
 }
 
-function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
+function GenerateEditInputForSrandartTypes<T extends Record<string, any>>({
     updateObject,
     onChange,
     updateScheme,
-    specificInputMap = new Map()
-}: GenerateEditInputForUpdateDtoSchemeProps<T>): JSX.Element {
+}: GenerateEditInputForSrandartTypesProps<T>): JSX.Element {
 
     const fieldToTypeMap = new Map<string, AccessibleTypes>();
 
@@ -45,26 +41,14 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
 
     const renderInput = useCallback((field: keyof typeof updateScheme.shape) => {
 
-        if (field == "id") return;
+        if (field.toString().toLocaleLowerCase().endsWith("id") || field.toString().toLocaleLowerCase().endsWith("ids")) return;
         const fieldValue = updateObject[field as string];
         const fieldType = fieldToTypeMap.get(field as string);
-
-        if (specificInputMap.has(field as string))
-            {
-                const func = specificInputMap.get(field as string);
-
-                console.debug(fieldValue);
-
-                return func!(onChange, fieldValue || '');
-            }
-
-
-        
 
         switch (typeof fieldValue) {
             case "string":
                 return (
-                    <Input
+                    <Textarea
                         type="text"
                         label= {field as string}
                         placeholder={field as string}
@@ -95,8 +79,6 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
                         <option value="false">False</option>
                     </select>
                 );
-            // default:
-            //     return <p>Unsupported type: {typeof fieldValue}</p>;
         }
     }, [onChange]);
 
@@ -111,4 +93,5 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
     );
 }
 
-export default GenerateEditInputForUpdateDtoScheme;
+
+export default GenerateEditInputForSrandartTypes

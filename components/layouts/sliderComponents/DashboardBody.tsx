@@ -69,6 +69,15 @@ const hotels: SidebarButtonType[] = [
   },
 ];
 
+
+const tours: SidebarButtonType[] = [
+  {
+    icon: <Icon className="text-2xl" icon="carbon:tour" />,
+    text: "Tours",
+    url: "/tables/hotel-table",
+  },
+]
+
 export default function DashboardBody({
   onButtonPress,
 }: Readonly<DashboardBodyProps>) {
@@ -84,6 +93,12 @@ export default function DashboardBody({
         icon={<Icon className="text-2xl" icon="fontisto:hotel" />}
         title="Hotel"
         items={hotels}
+        onButtonPress={onButtonPress}
+      />
+      <CollapseItems
+        icon={<Icon className="text-2xl" icon="carbon:tour" />}
+        title="Tours"
+        items={tours}
         onButtonPress={onButtonPress}
       />
     </>

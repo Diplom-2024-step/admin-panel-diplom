@@ -46,7 +46,11 @@ const GenerateInputForStandartTypes = (
 
     const renderInput = useCallback((field: keyof typeof createScheme) => {
 
-        if (field == "id") return;
+        if (field.toString().toLocaleLowerCase().endsWith("id")
+        ||
+    field.toString().toLocaleLowerCase().endsWith("ids")
+        
+        ) return;
         const fieldValue = form[field as string];
         const fieldType = fieldToTypeMap.get(field as string);
 
