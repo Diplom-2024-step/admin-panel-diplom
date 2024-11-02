@@ -30,6 +30,7 @@ export const createHotelDtoSchema = z.object({
     adress: z.string().max(512).default(''),
     PricePerNight: z.number().int().min(0).max(1000000).default(100),
     AdditionCostPerPerson: z.number().int().min(0).max(1000000).default(100),
+    WebSiteUrl: z.string().max(2048).default('')
 });
 
 export type CreateHotelDto = z.infer<typeof createHotelDtoSchema>;

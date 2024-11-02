@@ -1,4 +1,5 @@
 import { ModelDto } from '@/AppDtos/Shared/model-dto';
+import ImageInput from '@/components/inputs/ImageInput';
 import GenerateEditInputForSrandartTypes from '@/components/shared/models-windows/shared/generated-inputs/GenerateEditInputForSrandartTypes';
 import GenerateEditInputForUpdateDtoScheme from '@/components/shared/models-windows/shared/generated-inputs/GenerateEditInputForUpdateDtoScheme';
 import ZodErrorModalWindow from '@/components/shared/models-windows/shared/models-windows/ZodErrorModalWindow';
@@ -7,7 +8,7 @@ import DietTypeInput from '@/components/shared/models-windows/specific-inputs/mu
 import ForKidsInput from '@/components/shared/models-windows/specific-inputs/multipleInputs/ForKidsInput';
 import InHotelInput from '@/components/shared/models-windows/specific-inputs/multipleInputs/InHotelInput';
 import InRoomInput from '@/components/shared/models-windows/specific-inputs/multipleInputs/InRoomInput';
-import CityInput from '@/components/shared/models-windows/specific-inputs/singleInputes/CityInput';
+import SingleCityInput from '@/components/shared/models-windows/specific-inputs/singleInputes/SingleCityInput';
 import { CrudService } from '@/service/shared/CrudService';
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/modal';
 import { Button } from '@nextui-org/react';
@@ -118,7 +119,7 @@ const UpdateHotelModalWindow = <
                                         updateScheme={service.updateDtoSchema}
                                     />
 
-                                    <CityInput 
+                                    <SingleCityInput 
                                         onChange={onChange}
 
                                         currectValue={(objectState as any)['cityId']}                                    
@@ -148,6 +149,9 @@ const UpdateHotelModalWindow = <
                                     <DietTypeInput
                                         onChange={onChange}
                                         currectValue={(objectState as any)['dietTypeIds']}                                    
+                                    />
+
+                                    <ImageInput photoableId={objectState.id}                                    
                                     />
 
 

@@ -1,31 +1,26 @@
-"use client"
-import { ModelDto } from '@/AppDtos/Shared/model-dto'
-import { CrudService } from '@/service/shared/CrudService'
+import { GetTourDto } from '@/AppDtos/Dto/Models/Tours/get-tour-dto';
+import GenerateInputForStandartTypes from '@/components/shared/models-windows/shared/generated-inputs/GenerateInputForStandartTypes';
+import ZodErrorModalWindow from '@/components/shared/models-windows/shared/models-windows/ZodErrorModalWindow';
+import SingleCityInput from '@/components/shared/models-windows/specific-inputs/singleInputes/SingleCityInput';
+import TransportationTypeInput from '@/components/shared/models-windows/specific-inputs/singleInputes/TransportationTypeInput';
+import SelectThingsForHotel from '@/components/shared/models-windows/specific-inputs/tour/SelectThingsForHotel';
+import { TourService } from '@/service/crudServices/TourService';
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/modal';
-import React, { ReactElement, useEffect, useState } from 'react'
-import GenerateCreateInputForCreateDtoScheme from '../generated-inputs/GenerateCreateInputForCreateDtoScheme';
 import { Button } from '@nextui-org/react';
-import { number, string, ZodError } from 'zod';
-import ZodErrorModalWindow from './ZodErrorModalWindow';
-import SpecificInput from '@/types/model-windows/specific-inputs/SpecificInput';
-import CountryInput from '../../specific-inputs/singleInputes/CountryInput';
-import ReturnButtonForOpenCreateWindowFunction from '@/types/model-windows/buttons/create-buttons/ReturnButtonForOpenCreateWindowFunction';
-import FunctionForReturningSpecificInput from '@/types/model-windows/specific-inputs/FunctionForReturningSpecificInput';
+import React, { useState } from 'react'
+import { ZodError } from 'zod';
 
-const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDto>>(
-    {
-        isOpen,
-        onClose,
-        service,
-        specificInputMap
-    }: {
-        isOpen: boolean,
-        onClose: () => void,
-        service: Service,
-        specificInputMap : Map<string, FunctionForReturningSpecificInput<ModelDto>>
-    }
-) => {
+const CreateTourModalWindow = ({
+    isOpen,
+    onClose,
+    service,
 
+}: {
+    isOpen: boolean,
+    onClose: () => void,
+    service: TourService
+
+}) => {
     const [initialForm, setInitialForm] = useState(service.createDtoSchema.parse({}));
 
 
@@ -35,8 +30,8 @@ const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDt
     const [errors, setErros] = useState<Zod.ZodIssue[]>([]);
 
 
-    
-   const clearState = () => {
+
+    const clearState = () => {
         setForm({ ...initialForm });
     };
 
@@ -77,22 +72,49 @@ const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDt
 
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+                scrollBehavior='inside'
+                size='2xl'
+            >
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Create the model</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1 text-center">Create a new Tour</ModalHeader>
                             <ModalBody>
                                 {
-                                    <GenerateCreateInputForCreateDtoScheme
+                                    <GenerateInputForStandartTypes
                                         createScheme={service.createDtoSchema}
                                         form={form}
                                         onChange={onChange}
-                                        specificInputMap={
-                                            specificInputMap
-                                        }
                                     />
                                 }
+
+
+                                <TransportationTypeInput
+                                currectValue={form['transportationTypeId']}
+                                onChange={onChange}
+                                />
+
+                                <SingleCityInput
+                                    currectValue={form['toCityId']}
+                                    propertyName={'toCityId'}
+                                    onChange={onChange}
+                                    placeHolder='select to'
+                                />
+
+                                <SingleCityInput
+                                    currectValue={form['fromCityId']}
+                                    propertyName={'fromCityId'}
+                                    onChange={onChange}
+                                    placeHolder='select from'
+                                />
+
+                                <SelectThingsForHotel tour={form as any} onChange={onChange}                                
+                                />
+
+
 
 
                             </ModalBody>
@@ -117,4 +139,4 @@ const CreateModelWindow = <Service extends CrudService<ModelDto, object, ModelDt
     )
 }
 
-export default CreateModelWindow
+export default CreateTourModalWindow

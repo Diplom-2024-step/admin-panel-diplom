@@ -1,4 +1,3 @@
-
 import { GetHotelDto } from '@/AppDtos/Dto/Models/Hotels/get-hotel-dto'
 import GenerateInputForStandartTypes from '@/components/shared/models-windows/shared/generated-inputs/GenerateInputForStandartTypes';
 import BeachTypesDetails from '@/components/shared/models-windows/specific-details/multiple-details/BeachTypesDetails';
@@ -11,8 +10,11 @@ import RoomTypeDetails from '@/components/shared/models-windows/specific-details
 import DietTypeInput from '@/components/shared/models-windows/specific-inputs/multipleInputs/DietTypeInput';
 import { HotelService } from '@/service/crudServices/HotelService';
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/modal';
+import {Image} from "@nextui-org/image";
 import { Button } from '@nextui-org/react';
 import React from 'react'
+import Carousel from '@/components/shared/Carousel';
+import TransportationTypeDetails from '@/components/shared/models-windows/specific-details/single-details/TransportationTypeDetails';
 
 const ViewDetailHotelModalWindow = (
     {
@@ -43,6 +45,7 @@ const ViewDetailHotelModalWindow = (
                                 onChange={(item:any) =>{}}                                
                                 />
 
+
                                 <BeachTypesDetails items={model.beachTypes}                                
                                 />
 
@@ -66,6 +69,10 @@ const ViewDetailHotelModalWindow = (
                                 />
 
                                 <RoomTypeDetails items={model.roomTypes}/>
+
+                                <Carousel
+                                images={model.urls}
+                                />
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="warning" variant="light" onPress={innerOnClose}>

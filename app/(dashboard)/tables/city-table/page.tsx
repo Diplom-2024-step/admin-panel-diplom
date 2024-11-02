@@ -75,14 +75,7 @@ const page = () => {
   const displayCountryDetails: RenderFunction = (value: GetCountryDto) => {
     
     return (<CountyDetails items={[value]}/>)
-
-
-    // return <div className="flex items-center gap-2">
-    //   <div className="flex items-center">
-    //     <Icon icon={value.icon} className="mr-2" />
-    //     <span>{value.name}</span>
-    //   </div>
-    // </div>
+  
   }
 
 

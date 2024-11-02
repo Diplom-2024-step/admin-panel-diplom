@@ -2,7 +2,10 @@ import OnChangeFunctionProps from "@/types/model-windows/specific-inputs/OnChang
 
 interface SpecificInputProps {
   onChange: OnChangeFunctionProps;
-  currectValue: any
+  currectValue: any;
+  propertyName?: string;
+  placeHolder?: string;
+
 }
 
 export default interface SpecificInput extends React.FC<SpecificInputProps> {}

@@ -72,9 +72,19 @@ const hotels: SidebarButtonType[] = [
 
 const tours: SidebarButtonType[] = [
   {
+    icon: <Icon className="text-2xl" icon="fa6-solid:truck-plane" />,
+    text: "Transportation types",
+    url: "/tables/transportation-type-table",
+  },
+  {
+    icon: <Icon className="text-2xl" icon="dashicons:buddicons-activity" />,
+    text: "Activity",
+    url: "/tables/activity-table",
+  },
+  {
     icon: <Icon className="text-2xl" icon="carbon:tour" />,
     text: "Tours",
-    url: "/tables/hotel-table",
+    url: "/tables/tour-table",
   },
 ]
 

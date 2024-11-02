@@ -7,13 +7,26 @@ import { GetCityDto } from '@/AppDtos/Dto/Models/Hotels/get-city-dto';
 import { SelectedItems, SelectItem, SelectItemProps, SelectProps } from '@nextui-org/select';
 import { Icon } from '@iconify-icon/react';
 
-const CityInput: SpecificInput = ({
+const SingleCityInput: SpecificInput = ({
   onChange,
-  currectValue
+  currectValue,
+  propertyName,
+  placeHolder
 }) => {
 
 
   let cityService = new CityService();
+  let property = "cityId"
+
+  if (propertyName !== undefined)
+    {
+      property = propertyName;
+    }
+
+    if (placeHolder === undefined)
+      {
+        placeHolder = "select a city";
+      }
 
 
   const renderFunction = (item:GetCityDto) =>
@@ -30,10 +43,10 @@ const CityInput: SpecificInput = ({
 
   return (
     <SharedSingleInput
-      propertyName='cityId'
+      propertyName={property}
       currectValue={currectValue}
       onChange={onChange}
-      placeholder='Select a city'
+      placeholder={placeHolder}
       service={cityService}
       onSelectRenderFunction={renderFunction}
       renderFunction={renderFunction}
@@ -44,4 +57,4 @@ const CityInput: SpecificInput = ({
   )
 }
 
-export default CityInput
+export default SingleCityInput

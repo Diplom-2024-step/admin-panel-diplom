@@ -9,7 +9,7 @@ import ForSportInput from '@/components/shared/models-windows/specific-inputs/mu
 import InHotelInput from '@/components/shared/models-windows/specific-inputs/multipleInputs/InHotelInput';
 import InRoomInput from '@/components/shared/models-windows/specific-inputs/multipleInputs/InRoomInput';
 import RoomTypeInput from '@/components/shared/models-windows/specific-inputs/multipleInputs/RoomTypeInput';
-import CityInput from '@/components/shared/models-windows/specific-inputs/singleInputes/CityInput';
+import SingleCityInput from '@/components/shared/models-windows/specific-inputs/singleInputes/SingleCityInput';
 import CountryInput from '@/components/shared/models-windows/specific-inputs/singleInputes/CountryInput';
 import { HotelService } from '@/service/crudServices/HotelService';
 import { CrudService } from '@/service/shared/CrudService';
@@ -98,7 +98,7 @@ const CreateHotelModalWindow = ({
                     onChange={onChange}
                   />
                 }
-                <CityInput
+                <SingleCityInput
                   currectValue={form['cityId']}
                   onChange={onChange}
                 />

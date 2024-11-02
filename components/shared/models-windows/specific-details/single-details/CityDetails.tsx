@@ -5,11 +5,13 @@ import { Icon } from '@iconify-icon/react'
 
 const CityDetails = (
 {
-    items
+    items,
+    label
 } 
 :
 {
-    items:GetCityDto[]
+    items:GetCityDto[],
+    label?:string
 }) => {
 
 
@@ -30,7 +32,7 @@ const CityDetails = (
     items={items}
     renderFunction={renderFunction}
     onSelectRenderFunction={renderFunction}
-    label={'City'}    
+    label={label? label : 'City'}    
     />
   )
 }
