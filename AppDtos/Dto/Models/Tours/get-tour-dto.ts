@@ -8,13 +8,13 @@ import { getCityDtoSchema } from "./get-city-dto";
 import { getTransportationTypeDtoSchema } from "../TransportationTypes/get-transportation-type-dto";
 import { getRoomTypeDtoSchema } from "../RoomTypes/get-room-type-dto";
 import { getDietTypeDtoSchema } from "../DietTypes/get-diet-type-dto";
-import { getUserDtoSchema } from "../../Users/get-user-dto";import { z } from 'zod';
+import { getUserDtoSchema } from "../../Users/get-user-dto";
+import { z } from 'zod';
+import { getActivityDtoSchema } from "../Activities/get-activity-dto";
 
 export const getTourDtoSchema = z.object({
     name: z.string(),
     hotel: getHotelDtoSchema,
-    startDate: z.date(),
-    endDate: z.date(),
     fromCity: getCityDtoSchema,
     toCity: getCityDtoSchema,
     priceUSD: z.number().int(),
@@ -25,8 +25,8 @@ export const getTourDtoSchema = z.object({
     dietType: getDietTypeDtoSchema,
     howManyAdults: z.number().int(),
     howManyKids: z.number().int(),
-    users: z.array(getUserDtoSchema),
     urls: z.array(z.string()),
+    Activities: z.array(getActivityDtoSchema),
     id: z.string().uuid()
 });
 

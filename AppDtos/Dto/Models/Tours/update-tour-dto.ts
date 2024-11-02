@@ -2,13 +2,12 @@
  * This is a TypeGen auto-generated file.
  * Any changes made to this file can be lost when this file is regenerated.
  */
-import { z } from 'zod';
+
+import { z } from 'zod';
 
 export const updateTourDtoSchema = z.object({
     name: z.string().length(128),
     hotelId: z.string().uuid(),
-    sartDate: z.date(),
-    endDate: z.date(),
     fromCityId: z.string().uuid(),
     toCityId: z.string().uuid(),
     priceUSD: z.number().int(),
@@ -19,7 +18,7 @@ export const updateTourDtoSchema = z.object({
     dietTypeId: z.string().uuid(),
     howManyAdults: z.number().int().min(0).max(10),
     howManyKids: z.number().int().min(0).max(10),
-    userIds: z.array(z.string().uuid()),
+    activityIds: z.array(z.string().uuid()),
     id: z.string().uuid()
 });
 

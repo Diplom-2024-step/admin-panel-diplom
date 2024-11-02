@@ -58,6 +58,9 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
                 return func!(onChange, fieldValue || '');
             }
 
+
+        
+
         switch (typeof fieldValue) {
             case "string":
                 return (
@@ -92,8 +95,8 @@ function GenerateEditInputForUpdateDtoScheme<T extends Record<string, any>>({
                         <option value="false">False</option>
                     </select>
                 );
-            default:
-                return <p>Unsupported type: {typeof fieldValue}</p>;
+            // default:
+            //     return <p>Unsupported type: {typeof fieldValue}</p>;
         }
     }, [onChange]);
 

@@ -1,3 +1,4 @@
+"use client"
 import { ModelDto } from '@/AppDtos/Shared/model-dto'
 import { CrudService } from '@/service/shared/CrudService'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/modal';
@@ -7,7 +8,7 @@ import { Button } from '@nextui-org/react';
 import { number, string, ZodError } from 'zod';
 import ZodErrorModalWindow from './ZodErrorModalWindow';
 import SpecificInput from '@/types/model-windows/specific-inputs/SpecificInput';
-import CountryInput from '../../specific-inputs/CountryInput';
+import CountryInput from '../../specific-inputs/singleInputes/CountryInput';
 import ReturnButtonForOpenCreateWindowFunction from '@/types/model-windows/buttons/create-buttons/ReturnButtonForOpenCreateWindowFunction';
 import FunctionForReturningSpecificInput from '@/types/model-windows/specific-inputs/FunctionForReturningSpecificInput';
 

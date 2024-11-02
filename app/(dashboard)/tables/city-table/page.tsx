@@ -4,7 +4,7 @@ import ModelLayout from "@/components/layouts/ModelLayout";
 import { Icon } from "@iconify-icon/react";
 import { CityService } from "@/service/crudServices/CityService";
 import ButtonForOpenCreateModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenCreateModalWindow";
-import CountryInput from "@/components/shared/models-windows/specific-inputs/CountryInput";
+import CountryInput from "@/components/shared/models-windows/specific-inputs/singleInputes/CountryInput";
 import ReturnButtonForOpenCreateWindowFunction from "@/types/model-windows/buttons/create-buttons/ReturnButtonForOpenCreateWindowFunction";
 import { CrudService } from "@/service/shared/CrudService";
 import { ModelDto } from "@/AppDtos/Shared/model-dto";
@@ -16,6 +16,8 @@ import ButtonForOpenUpdateModalWindow from "@/components/shared/models-windows/s
 import RenderFunction from "@/types/table/RenderFunction";
 import { GetCountryDto } from "@/AppDtos/Dto/Models/Countries/get-country-dto";
 import ButtonForOpenViewDetailModalWindow from "@/components/shared/models-windows/shared/buttons/ButtonForOpenDetailModalWindow";
+import CityDetails from "@/components/shared/models-windows/specific-details/single-details/CityDetails";
+import CountyDetails from "@/components/shared/models-windows/specific-details/single-details/CountyDetails";
 
 const page = () => {
 
@@ -70,20 +72,28 @@ const page = () => {
 
   }
 
-  const displayCountry: RenderFunction = (value: GetCountryDto) => {
-    return <div className="flex items-center gap-2">
-      <div className="flex items-center">
-        <Icon icon={value.icon} className="mr-2" />
-        <span>{value.name}</span>
-      </div>
-    </div>
+  const displayCountryDetails: RenderFunction = (value: GetCountryDto) => {
+    
+    return (<CountyDetails items={[value]}/>)
+  
   }
+
+
+  const displayCountryColumn: RenderFunction = (value:GetCountryDto) => 
+    {
+     return <div className="flex items-center gap-2">
+       <div className="flex items-center">
+         <Icon icon={value.icon} className="mr-2" />
+         <span>{value.name}</span>
+       </div>
+     </div>
+    }
 
   const returnButtonForOpenViewDetailWindowFunction: ReturnButtonForOpenViewDetailWindowFunction<GetCityDto> = (model: GetCityDto) => {
     return <ButtonForOpenViewDetailModalWindow
       model={model}
       specificRenderMap={new Map(
-        [["country", displayCountry]]
+        [["country", displayCountryDetails]]
 
       )}
     />
@@ -100,7 +110,7 @@ const page = () => {
     }
     displayColumnsMap={
       new Map([
-        ["country", displayCountry]
+        ["country", displayCountryColumn]
       ])
     }
     dontAllowSort={[

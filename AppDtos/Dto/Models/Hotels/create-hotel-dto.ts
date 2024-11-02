@@ -10,7 +10,10 @@ export const createHotelDtoSchema = z.object({
     inHotelIds: z.array(z.string().uuid()).default([]),
     forSportIds: z.array(z.string().uuid()).default([]),
     beachTypeIds: z.array(z.string().uuid()).default([]),
+    forKidIds: z.array(z.string().uuid()).default([]),
     roomTypeIds: z.array(z.string().uuid()).default([]),
+    inRoomIds: z.array(z.string().uuid()).default([]),
+    dietTypeIds: z.array(z.string().uuid()).default([]),
     name: z.string().max(128).default(''),
     description: z.string().max(4096).default(''),
     stars: z.number().int().min(1).max(5).default(1),
@@ -25,6 +28,9 @@ export const createHotelDtoSchema = z.object({
     latitud: z.number().default(0),
     longitud: z.number().default(0),
     adress: z.string().max(512).default(''),
+    PricePerNight: z.number().int().min(0).max(1000000).default(100),
+    AdditionCostPerPerson: z.number().int().min(0).max(1000000).default(100),
+    WebSiteUrl: z.string().max(2048).default('')
 });
 
 export type CreateHotelDto = z.infer<typeof createHotelDtoSchema>;

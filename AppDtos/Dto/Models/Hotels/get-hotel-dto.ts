@@ -7,7 +7,11 @@ import { getCityDtoSchema } from "./get-city-dto";
 import { getInHotelDtoSchema } from "../InHotels/get-in-hotel-dto";
 import { getForSportDtoSchema } from "../ForSports/get-for-sport-dto";
 import { getBeachTypeDtoSchema } from "../BeachTypes/get-beach-type-dto";
-import { getRoomTypeDtoSchema } from "../RoomTypes/get-room-type-dto";import { z } from 'zod';
+import { getRoomTypeDtoSchema } from "../RoomTypes/get-room-type-dto";
+import { z } from 'zod';
+import { getForKidsDtoSchema } from "../ForKids/get-for-kids-dto";
+import { getInRoomDtoSchema } from "../InRooms/get-in-room-dto";
+import { getDietTypeDtoSchema } from "../DietTypes/get-diet-type-dto";
 
 export const getHotelDtoSchema = z.object({
     city: getCityDtoSchema,
@@ -15,6 +19,9 @@ export const getHotelDtoSchema = z.object({
     forSports: z.array(getForSportDtoSchema),
     beachTypes: z.array(getBeachTypeDtoSchema),
     roomTypes: z.array(getRoomTypeDtoSchema),
+    forKids: z.array(getForKidsDtoSchema),
+    inRooms: z.array(getInRoomDtoSchema),
+    dietTypes: z.array(getDietTypeDtoSchema),
     name: z.string(),
     description: z.string(),
     stars: z.number().int(),
@@ -30,7 +37,9 @@ export const getHotelDtoSchema = z.object({
     longitud: z.number(),
     adress: z.string(),
     urls: z.array(z.string()),
-    id: z.string().uuid()
+    id: z.string().uuid(),
+    PricePerNight: z.number(),
+    AdditionCostPerPerson: z.number(),
 });
 
 export type GetHotelDto = z.infer<typeof getHotelDtoSchema>;

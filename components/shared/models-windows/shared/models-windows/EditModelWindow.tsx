@@ -6,7 +6,7 @@ import React, { ReactElement, useEffect, useState } from 'react'
 import { ZodError } from 'zod';
 import GenerateEditInputForUpdateDtoScheme from '../generated-inputs/GenerateEditInputForUpdateDtoScheme';
 import ZodErrorModalWindow from './ZodErrorModalWindow';
-import CountryInput from '../../specific-inputs/CountryInput';
+import CountryInput from '../../specific-inputs/singleInputes/CountryInput';
 import FunctionForReturningSpecificInput from '@/types/model-windows/specific-inputs/FunctionForReturningSpecificInput';
 
 const EditModelWindow = <
@@ -47,7 +47,7 @@ const EditModelWindow = <
     });
   },
     
-  []);
+  [isOpen]);
 
 
      const onChange = (e: any, type: string) => {
@@ -103,7 +103,7 @@ const EditModelWindow = <
     }
     return (
         <>
-        <Modal isOpen={isOpen} onClose={innerOnClose}>
+        <Modal isOpen={isOpen} onClose={innerOnClose} >
             <ModalContent>
                 {(innerOnClose) => (
                     <>

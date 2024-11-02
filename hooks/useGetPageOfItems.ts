@@ -7,6 +7,7 @@ import { SortDescriptor } from "@nextui-org/table";
 import { useCallback } from "react";
 import { ZodError } from "zod";
 import { ReturnPageDto } from "@/AppDtos/Shared/return-page-dto";
+import { FilterDto } from "@/AppDtos/Shared/filter-dto";
 
 export default function useGetPageOfItems<
 TGetModelDto extends ModelDto,
@@ -20,7 +21,8 @@ TService extends CrudService<TGetModelDto, object, ModelDto>
         setError: (value : string | undefined ) => void,
         setPerPageError: (value : any ) => void,
         setItems: (value : ReturnPageDto<TGetModelDto> | undefined) => void,
-        status: string
+        status: string,
+        filtersDto?: FilterDto[][] 
 ) {
   return useCallback(async () => {
     setLoadingState("loading");
@@ -36,7 +38,7 @@ TService extends CrudService<TGetModelDto, object, ModelDto>
         await service.getAll({
           pageNumber: page ? parseInt(page) : 1,
           pageSize: perPage ? parseInt(perPage) || 10 : 10,
-          filters: [],
+          filters: filtersDto ? filtersDto : [],
           sorts: sortDescriptor?.column
             ? [
                 {

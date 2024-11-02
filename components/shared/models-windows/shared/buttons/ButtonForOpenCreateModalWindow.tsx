@@ -1,3 +1,4 @@
+"use client"
 import { ModelDto } from '@/AppDtos/Shared/model-dto'
 import { CrudService } from '@/service/shared/CrudService'
 import { Button } from '@nextui-org/react'
