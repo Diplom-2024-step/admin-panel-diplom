@@ -6,7 +6,8 @@
 import { z } from 'zod';
 
 export const createDietTypeDtoSchema = z.object({
-    name: z.string().max(64).default('')
+    name: z.string().max(64).default(''),
+    price: z.number().min(0).max(400).default(10)
 });
 
 export type CreateDietTypeDto = z.infer<typeof createDietTypeDtoSchema>;

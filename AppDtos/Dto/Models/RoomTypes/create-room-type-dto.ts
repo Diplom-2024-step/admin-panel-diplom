@@ -7,6 +7,7 @@ import { z } from "zod";
 
 export const createRoomTypeDtoSchema = z.object({
   name: z.string().max(64).default(""),
+  price: z.number().min(0).max(1000).default(10)
 });
 
 export type CreateRoomTypeDto = z.infer<typeof createRoomTypeDtoSchema>;

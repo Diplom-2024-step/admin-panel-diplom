@@ -66,7 +66,7 @@ const page = () => {
       updateButton={returnButtonForOpenUpdateWindow}
       viewDetailButton={returnButtonForOpenViewDetailWindowFunction}
       dontAllowSort={[]}
-      accessibleColumns={["id", "name"]}
+      accessibleColumns={["id", "name", "price"]}
       displayColumnsMap={new Map()}
     />
   );
